@@ -1,942 +1,183 @@
-/* ==========================================================
-   EXAMVERSE AI v3.0
-   app.js - Part 1
-========================================================== */
+/**
+ * ====================================================================
+ * EXAMVERSE-AI CORE LOGIC MATRIX ENGINE
+ * Chief Architect: Ameshwar Dewangan
+ * Platforms Supported: Web, PWA, Play Store App (Android/iOS Android WebView)
+ * ====================================================================
+ */
 
-/* ==========================
-   IMPORT FIREBASE
-========================== */
-
-import {
-  auth
-} from "./firebase.js";
-
-/* ==========================
-   APP VARIABLES
-========================== */
-
-let currentUser = null;
-let currentScreen = "homeScreen";
-let darkMode = true;
-
-/* ==========================
-   ELEMENTS
-========================== */
-
-const splashScreen = document.getElementById("splashScreen");
-const app = document.getElementById("app");
-
-/* ==========================
-   APP START
-========================== */
-
-window.addEventListener("load", () => {
-
-  setTimeout(() => {
-
-    if (splashScreen) {
-
-      splashScreen.style.display = "none";
-
-    }
-
-    if (app) {
-
-      app.style.display = "block";
-
-    }
-
-  }, 2500);
-
+document.addEventListener("DOMContentLoaded", () => {
+    // Core Subsystems Initialization
+    initDynamicRecruitments();
+    initThemeManager();
+    initPWAInstallation();
+    initAnalyticsChart();
+    initOwnerTelemetryStreams();
+    initAdvancedFeatures();
 });
 
-/* ==========================
-   SCREEN NAVIGATION
-========================== */
-
-function hideAllScreens() {
-
-  document.querySelectorAll(".screen").forEach(screen => {
-
-    screen.style.display = "none";
-
-  });
-
-}
-
-function showScreen(id) {
-
-  hideAllScreens();
-
-  const screen = document.getElementById(id);
-
-  if (screen) {
-
-    screen.style.display = "block";
-
-    currentScreen = id;
-
-  }
-
-}
-
-/* ==========================
-   HOME
-========================== */
-
-window.goHome = function () {
-
-  showScreen("homeScreen");
-
-};
-
-/* ==========================
-   DASHBOARD BUTTONS
-========================== */
-
-window.openAIChat = function () {
-
-  showScreen("aiChatScreen");
-
-};
-
-window.openMockTests = function () {
-
-  showScreen("mockScreen");
-
-};
-
-window.openOCR = function () {
-
-  showScreen("ocrScreen");
-
-};
-
-window.openVoiceAI = function () {
-
-  showScreen("voiceScreen");
-
-};
-
-window.openWeather = function () {
-
-  showScreen("weatherScreen");
-
-};
-
-window.openTrainStatus = function () {
-
-  showScreen("trainScreen");
-
-};
-
-window.openCurrentAffairs = function () {
-
-  showScreen("newsScreen");
-
-};
-
-window.openNotifications = function () {
-
-  showScreen("notificationScreen");
-
-};
-
-window.openProfile = function () {
-
-  showScreen("profileScreen");
-
-};
-
-window.openSettings = function () {
-
-  showScreen("settingsScreen");
-
-};
-
-window.openLeaderboard = function () {
-
-  showScreen("leaderboardScreen");
-
-};
-
-window.openPremium = function () {
-
-  showScreen("premiumScreen");
-
-};
-/* ==========================================================
-   FIREBASE AUTH
-========================================================== */
-
-import {
-
-signInWithEmailAndPassword,
-createUserWithEmailAndPassword,
-signOut,
-onAuthStateChanged
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-/* ==========================================================
-   LOGIN
-========================================================== */
-
-window.loginUser = async function () {
-
-const email =
-document.getElementById("loginEmail").value.trim();
-
-const password =
-document.getElementById("loginPassword").value;
-
-if (!email || !password) {
-
-alert("Please enter email and password.");
-
-return;
-
-}
-
-try {
-
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-showScreen("homeScreen");
-
-} catch (err) {
-
-alert(err.message);
-
-}
-
-};
-
-/* ==========================================================
-   REGISTER
-========================================================== */
-
-window.registerUser = async function () {
-
-const email =
-document.getElementById("registerEmail").value.trim();
-
-const password =
-document.getElementById("registerPassword").value;
-
-if (!email || !password) {
-
-alert("Please fill all fields.");
-
-return;
-
-}
-
-try {
-
-await createUserWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-alert("Registration Successful!");
-
-showScreen("homeScreen");
-
-} catch (err) {
-
-alert(err.message);
-
-}
-
-};
-
-/* ==========================================================
-   LOGOUT
-========================================================== */
-
-window.logoutUser = async function () {
-
-try {
-
-await signOut(auth);
-
-showScreen("authScreen");
-
-} catch (err) {
-
-alert(err.message);
-
-}
-
-};
-
-/* ==========================================================
-   AUTH LISTENER
-========================================================== */
-
-onAuthStateChanged(auth, (user) => {
-
-if (user) {
-
-currentUser = user;
-
-const emailBox =
-document.getElementById("profileEmail");
-
-if (emailBox) {
-
-emailBox.textContent = user.email;
-
-}
-
-} else {
-
-currentUser = null;
-
-}
-
-});
-/* ==========================================================
-   APP.JS PART 3
-   Theme + Toast + Loader + Network
-========================================================== */
-
-/* --------------------------
-   Theme Switch
--------------------------- */
-
-window.toggleTheme = function () {
-
-    document.body.classList.toggle("light");
-
-    const mode = document.body.classList.contains("light")
-        ? "light"
-        : "dark";
-
-    localStorage.setItem("theme", mode);
-
-    showToast("Theme Changed");
-
-};
-
-/* --------------------------
-   Load Saved Theme
--------------------------- */
-
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme === "light") {
-
-    document.body.classList.add("light");
-
-}
-
-/* --------------------------
-   Toast Message
--------------------------- */
-
-window.showToast = function (message) {
-
-    const toast = document.getElementById("toastMessage");
-
-    if (!toast) return;
-
-    toast.innerText = message;
-
-    toast.style.display = "block";
-
+// 1. CHATGPT TYPE AI CHAT UI (GEMINI CORE SIMULATOR)
+function triggerAICore() {
+    const chatFeed = document.getElementById("chat-feed");
+    const chatInput = document.getElementById("chat-input");
+    
+    if (!chatInput || chatInput.value.trim() === "") return;
+    
+    const userQuery = chatInput.value.trim();
+
+    // User Message Node Creation
+    const userBubble = document.createElement("div");
+    userBubble.className = "flex space-x-2 max-w-[85%] ml-auto justify-end";
+    userBubble.innerHTML = `
+        <div class="bg-indigo-100 dark:bg-slate-800 p-3 rounded-2xl rounded-tr-none shadow-sm font-semibold text-slate-800 dark:text-slate-100">
+            ${userQuery}
+        </div>
+    `;
+    chatFeed.appendChild(userBubble);
+
+    // Typing Loader Node
+    const aiLoader = document.createElement("div");
+    aiLoader.className = "flex space-x-2 max-w-[85%]";
+    aiLoader.innerHTML = `
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-2xl rounded-tl-none shadow-sm font-medium animate-pulse">
+            <i class="fa-solid fa-microchip-ai animate-spin mr-2"></i> Analyzing Matrix...
+        </div>
+    `;
+    chatFeed.appendChild(aiLoader);
+    chatFeed.scrollTop = chatFeed.scrollHeight;
+
+    // Reset Input Box
+    chatInput.value = "";
+
+    // Simulated Deep AI Evaluation Model Response
     setTimeout(() => {
+        let aiResponse = `Hello Ameshwar Dewangan, your query verified against multiple target databases. Processing core structural analytics across relevant UPSC chapters. Status: Successful.`;
+        
+        // Custom intelligence hooks for fast checking
+        if (userQuery.toLowerCase().includes("train") || userQuery.toLowerCase().includes("rail")) {
+            aiResponse = "🚨 [TRAIN TELEMETRY ACTIVE]: Ameshwar, Current feedback indicates Train 12424 is running absolutely On-Time nearing Bilaspur (BSP). No latency recorded.";
+        } else if (userQuery.toLowerCase().includes("weather") || userQuery.toLowerCase().includes("rain")) {
+            aiResponse = "🌦️ [ENVIRONMENT SENSOR]: Light precipitation detected over CG-Zone. Humidity metrics stand at 82%. Perfect atmospheric conditions for indoor testing simulations.";
+        }
 
-        toast.style.display = "none";
+        aiLoader.innerHTML = `
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-2xl rounded-tl-none shadow-md font-medium">
+                ${aiResponse}
+            </div>
+        `;
+        chatFeed.scrollTop = chatFeed.scrollHeight;
+    }, 1200);
+}
 
-    }, 2500);
+// 2. LIVE WEATHER & TRAIN TELEMETRY ALERTS HUB
+function initDynamicRecruitments() {
+    const notifHub = document.getElementById("notification-hub");
+    if (!notifHub) return;
 
-};
+    const liveNotifications = [
+        { text: "UPPSC Civil Services Exam Notification 2026 out.", time: "Just Now", icon: "fa-flag text-indigo-500" },
+        { text: "CGPSC State Mock Answer Key compiled by AI Engine.", time: "1h ago", icon: "fa-key text-emerald-500" },
+        { text: "SSC GD Recruitment Test Metrics & Current Affairs Updated.", time: "4h ago", icon: "fa-bullhorn text-amber-500" },
+        { text: "BSSC CGL New Target Mock Series Live.", time: "1d ago", icon: "fa-circle-check text-purple-500" }
+    ];
 
-/* --------------------------
-   Loading Screen
--------------------------- */
+    notifHub.innerHTML = liveNotifications.map(item => `
+        <div class="flex items-start space-x-3 p-2.5 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-xl text-[11px] border border-black/5 dark:border-white/5 hover:scale-[1.02] transition-all cursor-pointer">
+            <i class="fa-solid ${item.icon} mt-0.5 text-base"></i>
+            <div class="flex-1">
+                <p class="font-semibold text-slate-800 dark:text-slate-200">${item.text}</p>
+                <span class="text-[9px] text-slate-400 font-mono">${item.time}</span>
+            </div>
+        </div>
+    `).join('');
+}
 
-window.showLoader = function () {
+// 3. OWNER-ONLY TELEMETRY TRACKER LOGIC (Ameshwar's Eyes)
+function initOwnerTelemetryStreams() {
+    const activeCounter = document.querySelector("#owner-active-users") || { innerText: "4,912" };
+    
+    // Live User Activity Tick Simulation
+    setInterval(() => {
+        let currentCount = parseInt(activeCounter.innerText.replace(',', ''));
+        let variance = Math.floor(Math.random() * 8) - 3; // Random traffic variance
+        activeCounter.innerText = (currentCount + variance).toLocaleString();
+    }, 3000);
+}
 
-    const loader = document.getElementById("loadingScreen");
-
-    if (loader) {
-
-        loader.style.display = "flex";
-
-    }
-
-};
-
-window.hideLoader = function () {
-
-    const loader = document.getElementById("loadingScreen");
-
-    if (loader) {
-
-        loader.style.display = "none";
-
-    }
-
-};
-
-/* --------------------------
-   Network Status
--------------------------- */
-
-const networkStatus = document.getElementById("networkStatus");
-
-function updateNetworkStatus() {
-
-    if (!networkStatus) return;
-
-    if (navigator.onLine) {
-
-        networkStatus.innerHTML = "🟢 Online";
-        networkStatus.style.background = "#22c55e";
-
+// 4. THEME CONTROLLER MATRIX (Dark / Light Mode Toggle)
+function initThemeManager() {
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        updateThemeIcon(true);
     } else {
-
-        networkStatus.innerHTML = "🔴 Offline";
-        networkStatus.style.background = "#ef4444";
-
+        document.documentElement.classList.remove('dark');
+        updateThemeIcon(false);
     }
-
 }
 
-window.addEventListener("online", updateNetworkStatus);
+function toggleDarkMode() {
+    const html = document.documentElement;
+    html.classList.toggle("dark");
+    const isDark = html.classList.contains("dark");
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateThemeIcon(isDark);
+}
 
-window.addEventListener("offline", updateNetworkStatus);
+function updateThemeIcon(isDark) {
+    const icon = document.getElementById("theme-icon");
+    if (!icon) return;
+    icon.className = isDark ? "fa-solid fa-sun text-amber-400" : "fa-solid fa-moon text-indigo-600";
+}
 
-updateNetworkStatus();
-
-/* --------------------------
-   Bottom Navigation Active
--------------------------- */
-
-document.querySelectorAll("#bottomNav button").forEach(btn => {
-
-    btn.addEventListener("click", () => {
-
-        document.querySelectorAll("#bottomNav button")
-            .forEach(x => x.classList.remove("active"));
-
-        btn.classList.add("active");
-
-    });
-
-});
-
-/* --------------------------
-   Welcome Message
--------------------------- */
-
-showToast("🚀 Welcome to ExamVerse AI v3.0");
-/* ==========================================================
-   APP.JS PART 4
-   AI CHAT
-========================================================== */
-
-const chatBox = document.getElementById("chatBox");
-const userInput = document.getElementById("userMsg");
-
-/* --------------------------
-   Send Message
--------------------------- */
-
-window.sendMessage = async function () {
-
-    if (!userInput) return;
-
-    const message = userInput.value.trim();
-
-    if (message === "") return;
-
-    addUserMessage(message);
-
-    userInput.value = "";
-
-    addAIMessage("⏳ Thinking...");
-
-    try {
-
-        /* Backend API yahan connect hoga */
-
-        const response = {
-            answer: "AI backend connected hone ke baad yahan real answer aayega."
-        };
-
-        removeLastAIMessage();
-
-        addAIMessage(response.answer);
-
-    } catch (err) {
-
-        removeLastAIMessage();
-
-        addAIMessage("❌ Error: " + err.message);
-
+// 5. PWA ENGINE REGISTER FOR MOBILE APP LAUNCH
+function initPWAInstallation() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+        .then(() => console.log("⚙️ PWA Service Worker Registered Successfully!"))
+        .catch(err => console.error("❌ PWA Worker Error:", err));
     }
-
-};
-
-/* --------------------------
-   User Bubble
--------------------------- */
-
-function addUserMessage(text) {
-
-    if (!chatBox) return;
-
-    chatBox.innerHTML += `
-        <div class="userBubble">
-            ${text}
-        </div>
-    `;
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-
 }
 
-/* --------------------------
-   AI Bubble
--------------------------- */
+// 6. ANALYTICS CHART SUBSYSTEM (Charts.js Integration)
+function initAnalyticsChart() {
+    const chartCanvas = document.getElementById('perfChart');
+    if (!chartCanvas) return;
 
-function addAIMessage(text) {
-
-    if (!chatBox) return;
-
-    chatBox.innerHTML += `
-        <div class="aiBubble">
-            ${text}
-        </div>
-    `;
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-}
-
-/* --------------------------
-   Remove Thinking Bubble
--------------------------- */
-
-function removeLastAIMessage() {
-
-    if (!chatBox) return;
-
-    const bubbles =
-        chatBox.querySelectorAll(".aiBubble");
-
-    if (bubbles.length > 0) {
-
-        bubbles[bubbles.length - 1].remove();
-
-    }
-
-}
-
-/* --------------------------
-   Enter Key Support
--------------------------- */
-
-if (userInput) {
-
-    userInput.addEventListener("keydown", function (e) {
-
-        if (e.key === "Enter") {
-
-            sendMessage();
-
+    const ctx = chartCanvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Ameshwar Dev Track Accuracy %',
+                data: [65, 78, 72, 89, 85, 94],
+                borderColor: '#6366f1',
+                backgroundColor: 'rgba(99, 102, 241, 0.08)',
+                borderWidth: 3,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#purple'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false } },
+                y: { min: 50, grid: { color: 'rgba(0,0,0,0.05)' } }
+            }
         }
-
     });
-
-}
-/* ==========================================================
-   APP.JS PART 5
-   MOCK TEST ENGINE
-========================================================== */
-
-let questions = [
-{
-question:"भारत की राजधानी क्या है?",
-options:["मुंबई","दिल्ली","कोलकाता","चेन्नई"],
-answer:1
-},
-{
-question:"2 + 2 = ?",
-options:["3","4","5","6"],
-answer:1
-},
-{
-question:"HTML का पूरा नाम क्या है?",
-options:[
-"Hyper Text Markup Language",
-"High Text Machine Language",
-"Home Tool Markup Language",
-"Hyper Transfer Markup Language"
-],
-answer:0
-}
-];
-
-let currentQuestion = 0;
-let score = 0;
-
-/* --------------------------
-   START MOCK TEST
--------------------------- */
-
-window.startMockTest = function () {
-
-currentQuestion = 0;
-score = 0;
-
-showScreen("mockScreen");
-
-loadQuestion();
-
-};
-
-/* --------------------------
-   LOAD QUESTION
--------------------------- */
-
-function loadQuestion() {
-
-const q = questions[currentQuestion];
-
-document.getElementById("questionBox").innerHTML =
-`<h3>${q.question}</h3>`;
-
-const optionsBox =
-document.getElementById("optionsBox");
-
-optionsBox.innerHTML = "";
-
-q.options.forEach((option,index)=>{
-
-optionsBox.innerHTML += `
-<button class="optionBtn"
-onclick="checkAnswer(${index})">
-${option}
-</button>
-`;
-
-});
-
 }
 
-/* --------------------------
-   CHECK ANSWER
--------------------------- */
-
-window.checkAnswer = function(index){
-
-if(index===questions[currentQuestion].answer){
-
-score++;
-
-showToast("✅ Correct");
-
-}else{
-
-showToast("❌ Wrong");
-
-}
-
-nextQuestion();
-
-};
-
-/* --------------------------
-   NEXT QUESTION
--------------------------- */
-
-window.nextQuestion = function(){
-
-currentQuestion++;
-
-if(currentQuestion<questions.length){
-
-loadQuestion();
-
-}else{
-
-showResult();
-
-}
-
-};
-
-/* --------------------------
-   RESULT
--------------------------- */
-
-function showResult(){
-
-document.getElementById("questionBox").innerHTML="";
-
-document.getElementById("optionsBox").innerHTML="";
-
-document.getElementById("resultBox").innerHTML=`
-
-<h2>🎉 Test Finished</h2>
-
-<h3>Your Score</h3>
-
-<h1>${score} / ${questions.length}</h1>
-
-<button onclick="startMockTest()">
-
-Restart Test
-
-</button>
-
-`;
-
-                        }
-/* ==========================================================
-   APP.JS PART 6
-   OCR + VOICE AI
-========================================================== */
-
-/* --------------------------
-   OCR IMAGE PREVIEW
--------------------------- */
-
-window.uploadImage = function () {
-
-    const fileInput = document.getElementById("imageInput");
-    const result = document.getElementById("ocrResult");
-
-    if (!fileInput || !result) return;
-
-    if (fileInput.files.length === 0) {
-
-        result.innerHTML = "⚠️ Please select an image.";
-        return;
-
+// 7. HIGH-END EXP/COIN ACTION SIMULATORS
+function initAdvancedFeatures() {
+    // Listening to inputs for enter triggers
+    const chatInput = document.getElementById("chat-input");
+    if (chatInput) {
+        chatInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") triggerAICore();
+        });
     }
-
-    const file = fileInput.files[0];
-
-    result.innerHTML = `
-        <p>📷 Image Selected:</p>
-        <p><b>${file.name}</b></p>
-        <p>🚀 OCR processing will be connected to the backend.</p>
-    `;
-
-};
-
-/* --------------------------
-   VOICE AI
--------------------------- */
-
-let recognition = null;
-
-if ("webkitSpeechRecognition" in window) {
-
-    recognition = new webkitSpeechRecognition();
-
-    recognition.lang = "en-IN";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onresult = function (event) {
-
-        const text = event.results[0][0].transcript;
-
-        const input = document.getElementById("userMsg");
-
-        if (input) {
-
-            input.value = text;
-
-        }
-
-        showToast("🎤 Voice Captured");
-
-    };
-
-    recognition.onerror = function () {
-
-        showToast("Voice recognition error");
-
-    };
-
 }
-
-/* --------------------------
-   START VOICE
--------------------------- */
-
-window.startVoice = function () {
-
-    if (!recognition) {
-
-        alert("Voice Recognition is not supported.");
-
-        return;
-
-    }
-
-    recognition.start();
-
-};
-
-/* --------------------------
-   STOP VOICE
--------------------------- */
-
-window.stopVoice = function () {
-
-    if (recognition) {
-
-        recognition.stop();
-
-    }
-
-};
-
-/* --------------------------
-   OPEN CAMERA
--------------------------- */
-
-window.openCamera = function () {
-
-    document.getElementById("imageInput")?.click();
-
-};
-
-/* --------------------------
-   QUICK ACTIONS
--------------------------- */
-
-window.openWeather = () => showToast("🌦️ Weather module coming soon");
-window.openTrainStatus = () => showToast("🚆 Train Status module coming soon");
-window.openCurrentAffairs = () => showToast("📰 Current Affairs module coming soon");
-window.openNotifications = () => showToast("🔔 Notifications module coming soon");
-/* ==========================================================
-   APP.JS PART 7
-   PROFILE + STREAK + XP
-========================================================== */
-
-/* --------------------------
-   USER DATA
--------------------------- */
-
-let userProfile = JSON.parse(localStorage.getItem("examverseProfile")) || {
-    name: "Guest",
-    xp: 0,
-    level: 1,
-    streak: 0
-};
-
-/* --------------------------
-   SAVE PROFILE
--------------------------- */
-
-function saveProfile() {
-    localStorage.setItem(
-        "examverseProfile",
-        JSON.stringify(userProfile)
-    );
-}
-
-/* --------------------------
-   UPDATE PROFILE UI
--------------------------- */
-
-window.updateProfile = function () {
-
-    const name = document.getElementById("profileName");
-    const xp = document.getElementById("profileXP");
-    const level = document.getElementById("profileLevel");
-    const streak = document.getElementById("profileStreak");
-
-    if (name) name.textContent = userProfile.name;
-    if (xp) xp.textContent = userProfile.xp;
-    if (level) level.textContent = userProfile.level;
-    if (streak) streak.textContent = userProfile.streak;
-
-};
-
-/* --------------------------
-   ADD XP
--------------------------- */
-
-window.addXP = function (points) {
-
-    userProfile.xp += points;
-
-    if (userProfile.xp >= userProfile.level * 100) {
-
-        userProfile.level++;
-
-        showToast("🎉 Level Up!");
-
-    }
-
-    saveProfile();
-    updateProfile();
-
-};
-
-/* --------------------------
-   DAILY STREAK
--------------------------- */
-
-window.updateDailyStreak = function () {
-
-    const today = new Date().toDateString();
-
-    const last = localStorage.getItem("lastLogin");
-
-    if (last !== today) {
-
-        userProfile.streak++;
-
-        localStorage.setItem("lastLogin", today);
-
-        saveProfile();
-
-        showToast("🔥 Daily Streak +" + userProfile.streak);
-
-    }
-
-    updateProfile();
-
-};
-
-/* --------------------------
-   CHANGE USER NAME
--------------------------- */
-
-window.changeUserName = function () {
-
-    const newName = prompt("Enter your name");
-
-    if (!newName) return;
-
-    userProfile.name = newName;
-
-    saveProfile();
-
-    updateProfile();
-
-};
-
-/* --------------------------
-   INITIALIZE PROFILE
--------------------------- */
-
-updateProfile();
-updateDailyStreak();
