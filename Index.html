@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExamVerse-AI | Ultimate Omnipresent Super-App</title>
-    <!-- Tailwind CSS & Configuration for Custom Gradients/Glassmorphism -->
+    <title>ExamVerse-AI India | Ultra Super Ecosystem</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -19,230 +18,212 @@
             }
         }
     </script>
-    <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for High-End Dashboard Analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Inter & Plus Jakarta Sans Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s, color 0.3s; }
         .glassmorphism {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .dark .glassmorphism {
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        @keyframes pulse-slow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .animate-pulse-slow { animation: pulse-slow 4s infinite ease-in-out; }
+        .scanning-line {
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 via-slate-50 to-purple-50 text-slate-800 dark:from-slate-950 dark:via-indigo-950 dark:to-slate-900 dark:text-slate-100 min-h-screen overflow-x-hidden">
+<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-slate-100 min-h-screen">
 
-    <!-- TOP PREMIUM BAR -->
-    <nav class="sticky top-0 z-50 glassmorphism px-6 py-3 flex justify-between items-center shadow-lg">
+    <nav class="sticky top-0 z-50 glassmorphism px-6 py-3 flex justify-between items-center shadow-2xl">
         <div class="flex items-center space-x-3">
-            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-2.5 rounded-xl shadow-md">
-                <i class="fa-solid fa-brain-circuit text-xl animate-spin-slow"></i>
+            <div class="bg-gradient-to-r from-cyan-500 to-indigo-500 text-white p-2.5 rounded-xl shadow-lg">
+                <i class="fa-solid fa-gavel text-xl animate-spin-slow"></i>
             </div>
             <div>
-                <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-indigo-600 to-purple-500 bg-clip-text text-transparent">ExamVerse.AI</span>
-                <p class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Chief Architect: Ameshwar Dewangan</p>
+                <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">ExamVerse-AI India</span>
+                <p class="text-[10px] uppercase tracking-widest font-bold text-cyan-400">Architect: Ameshwar Dewangan</p>
             </div>
         </div>
 
-        <!-- System Controls & Gamification Counters -->
         <div class="flex items-center space-x-4">
-            <div class="flex items-center bg-orange-500/10 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-xl font-bold text-xs border border-orange-500/20">
-                <i class="fa-solid fa-fire mr-1.5 animate-bounce"></i> 24 Days Streak
+            <div class="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-xl font-mono text-xs border border-emerald-500/20">
+                <i class="fa-solid fa-bolt mr-1.5 text-amber-400 animate-pulse"></i> Quantum Core Active
             </div>
-            <div class="flex items-center bg-purple-500/10 text-purple-600 dark:text-purple-400 px-3 py-1.5 rounded-xl font-bold text-xs border border-purple-500/20">
-                <i class="fa-solid fa-gem mr-1.5"></i> 3,450 XP
-            </div>
-            <!-- Theme Toggle -->
-            <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-white/50 dark:bg-slate-800/50 hover:scale-105 transition-all text-xl shadow-sm border border-black/5 dark:border-white/5">
-                <i id="theme-icon" class="fa-solid fa-moon text-indigo-600 dark:text-amber-400"></i>
+            <button id="auth-btn" onclick="openAuthModal()" class="bg-gradient-to-r from-cyan-500 to-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-md">
+                <i class="fa-solid fa-user-shield mr-1.5"></i> Gateway Login
             </button>
         </div>
     </nav>
 
-    <!-- MAIN GRID CONTAINER (Unacademy Dashboard Framework) -->
-    <div class="max-w-[1700px] mx-auto grid grid-cols-1 xl:grid-cols-4 gap-6 p-6">
+    <div class="max-w-[1750px] mx-auto grid grid-cols-1 xl:grid-cols-5 gap-6 p-6">
         
-        <!-- SIDEBAR LEFT: 100+ screens framework links -->
-        <aside class="space-y-6">
-            <!-- Exam Hub Selection Matrix -->
-            <div class="glassmorphism p-5 rounded-2xl shadow-sm">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-500 mb-3"><i class="fa-solid fa-graduation-cap mr-1"></i> Target Exam Universes</h3>
-                <div class="space-y-1.5 text-xs font-semibold">
-                    <button class="w-full flex items-center justify-between p-3 rounded-xl bg-indigo-600 text-white shadow-md"><span class="flex items-center"><i class="fa-solid fa-book-bookmark mr-2"></i> UPSC Civil Services (IAS)</span><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                    <button class="w-full flex items-center justify-between p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5"><span class="flex items-center"><i class="fa-solid fa-landmark mr-2"></i> State PSC (CGPSC, UPPSC, BPSC)</span><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                    <button class="w-full flex items-center justify-between p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5"><span class="flex items-center"><i class="fa-solid fa-id-card mr-2"></i> SSC GD / CGL / Police Recruitment</span><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                </div>
-            </div>
-
-            <!-- Dynamic Telemetry & Live Services Widgets -->
-            <div class="glassmorphism p-5 rounded-2xl shadow-sm space-y-4">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-500"><i class="fa-solid fa-circle-nodes mr-1"></i> Live Telemetry Services</h3>
-                <!-- Live Train Telemetry -->
-                <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                    <div class="flex justify-between items-center text-xs mb-1"><span class="font-bold text-emerald-600 dark:text-emerald-400"><i class="fa-solid fa-train mr-1"></i> Live Rail Tracker</span><span class="text-[9px] bg-emerald-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">Online</span></div>
-                    <p class="text-xs font-bold">Train 12424 (Rajdhani Exp)</p>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-400">Current: Bilaspur Junction (BSP) | Status: On-Time (+0 Min)</p>
-                </div>
-                <!-- Live Weather Telemetry -->
-                <div class="p-3 rounded-xl bg-sky-500/10 border border-sky-500/20">
-                    <div class="flex justify-between items-center text-xs mb-1"><span class="font-bold text-sky-600 dark:text-sky-400"><i class="fa-solid fa-cloud-sun-rain mr-1"></i> Precipitation Radar Real-time</span></div>
-                    <p class="text-xs font-bold">CG-Zone Precipitation Index</p>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-400">Rain Probability: 74% Light Showers | Humidity: 82% | Wind: 14km/h</p>
+        <aside class="xl:col-span-1 space-y-4">
+            <div class="glassmorphism p-5 rounded-2xl shadow-xl">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-4"><i class="fa-solid fa-sliders mr-1.5"></i> Super Engine Navigation</h3>
+                <div class="space-y-2 text-xs font-semibold">
+                    <button onclick="switchTab('exam-section')" class="tab-btn w-full flex items-center p-3 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 text-white shadow-md"><i class="fa-solid fa-graduation-cap mr-3 text-sm"></i> Govt Exam Hub</button>
+                    <button onclick="switchTab('ticket-section')" class="tab-btn w-full flex items-center p-3 rounded-xl hover:bg-white/5 transition-all"><i class="fa-solid fa-route mr-3 text-sm text-amber-400"></i> Travel & Telemetry</button>
+                    <button onclick="switchTab('entertainment-section')" class="tab-btn w-full flex items-center p-3 rounded-xl hover:bg-white/5 transition-all"><i class="fa-solid fa-tv mr-3 text-sm text-red-400"></i> Live Stream & Movies</button>
+                    <button onclick="switchTab('ai-vision-section')" class="tab-btn w-full flex items-center p-3 rounded-xl hover:bg-white/5 transition-all"><i class="fa-solid fa-eye mr-3 text-sm text-emerald-400"></i> AI Vision Scanner</button>
+                    <button onclick="switchTab('ar-treasure-section')" class="tab-btn w-full flex items-center p-3 rounded-xl hover:bg-white/5 transition-all"><i class="fa-solid fa-vr-cardboard mr-3 text-sm text-purple-400"></i> AR Treasure Hunt</button>
                 </div>
             </div>
         </aside>
 
-        <!-- CENTER MATRIX: Main Workspace & Features -->
-        <main class="xl:col-span-2 space-y-6">
-            <!-- Anticipatory Banner -->
-            <div class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 rounded-3xl p-6 text-white relative overflow-hidden shadow-xl animate-pulse-slow">
-                <span class="bg-indigo-500/30 text-indigo-300 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest border border-indigo-500/20">Anticipatory AI Engine V2</span>
-                <h1 class="text-2xl font-extrabold mt-3 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-purple-300">Welcome back to your Universe.</h1>
-                <p class="text-xs text-indigo-200/80 mt-1 max-w-md">Our system model maps real-time exam criteria, current events, and multi-industry logic paths customized by Architect Ameshwar Dewangan.</p>
-                <div class="flex space-x-2 mt-4"><button class="bg-white text-indigo-950 text-xs font-bold px-4 py-2 rounded-xl shadow-md hover:scale-105 transition-all">Launch Custom Universe Quiz</button><button class="bg-white/10 text-white text-xs font-bold px-4 py-2 rounded-xl border border-white/20 hover:bg-white/20 transition-all">Enable Offline Support</button></div>
-                <div class="absolute -right-12 -bottom-12 text-white/5 text-[180px] font-black pointer-events-none uppercase">AI</div>
-            </div>
-
-            <!-- ChatGPT Style Integrated Chat AI UI (Gemini Subsystem) -->
-            <div class="glassmorphism rounded-2xl shadow-lg border p-4 flex flex-col h-[400px]">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
-                    <div class="flex items-center space-x-2"><i class="fa-solid fa-robot text-lg text-indigo-500 animate-pulse"></i><div><h3 class="text-sm font-bold">ExamVerse Core AI Tutor</h3><p class="text-[9px] text-emerald-500 font-bold">Powered by Gemini Engine</p></div></div>
-                    <span class="text-[10px] text-slate-400 font-mono">Token Usage: Dynamic</span>
+        <main class="xl:col-span-4 space-y-6">
+            
+            <section id="exam-section" class="tab-content space-y-6">
+                <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-cyan-950 p-6 rounded-3xl border border-white/5 shadow-xl">
+                    <h1 class="text-3xl font-black">Ecosystem Core V3</h1>
+                    <p class="text-xs text-slate-400 mt-1">Syllabus Matrix, Live Government Notifications, and direct online form portal triggers managed by Ameshwar Dewangan.</p>
                 </div>
-                <!-- Chat Feed Wrapper -->
-                <div class="flex-1 overflow-y-auto space-y-3 p-2 text-xs" id="chat-feed">
-                    <div class="flex space-x-2 max-w-[85%]"><div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tl-none shadow-sm font-medium">Hello, Ameshwar Dewangan. Ready to dive into today's mock breakdown? Paste code, text, or query details instantly below.</div></div>
-                </div>
-                <!-- Chat Action Area -->
-                <div class="mt-3 flex items-center space-x-2 bg-slate-100 dark:bg-slate-900 p-1.5 rounded-xl border dark:border-slate-800">
-                    <input id="chat-input" type="text" placeholder="Ask AI anything about any exam, topic, or industry knowledge..." class="bg-transparent border-0 flex-1 text-xs px-3 py-2 text-slate-800 dark:text-slate-100 focus:outline-none">
-                    <button onclick="triggerAICore()" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl transition-all"><i class="fa-solid fa-paper-plane text-xs"></i></button>
-                </div>
-            </div>
-
-            <!-- Analytics Dashboard Widgets (Charts Integration) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="glassmorphism p-5 rounded-2xl shadow-sm"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-chart-line mr-1 text-indigo-500"></i> Performance Analytics</h3><canvas id="perfChart" width="100" height="50"></canvas></div>
-                <div class="glassmorphism p-5 rounded-2xl shadow-sm"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-calendar-days mr-1 text-purple-500"></i> Daily Syllabus Calendar</h3><div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-400 mt-2"><span class="bg-indigo-600 text-white p-1 rounded">M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><p class="text-[11px] font-semibold text-center mt-3 text-slate-500">Next Live Rank Assessment Test Schedule: Tonight 09:00 PM</p></div>
-            </div>
-        </main>
-
-        <!-- RIGHT SIDEBAR: Owner Controls & Advanced Analytics Real-time Tracking -->
-        <aside class="space-y-6">
-            <!-- Dynamic Notification Center -->
-            <div class="glassmorphism p-5 rounded-2xl shadow-sm">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-500 mb-3"><i class="fa-solid fa-bell mr-1"></i> Live Notifications & Jobs Hub</h3>
-                <div class="space-y-2" id="notification-hub">
-                    <!-- Script Managed Injection -->
-                </div>
-            </div>
-
-            <!-- OWNER-ONLY SECURITY PLATFORM DASHBOARD -->
-            <div class="bg-slate-950 text-white p-5 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-400"><i class="fa-solid fa-user-shield mr-1.5"></i> Architect Command Suite</h3>
-                    <span class="bg-cyan-500/10 text-cyan-400 font-mono text-[9px] px-2 py-0.5 rounded-md border border-cyan-500/20">Ameshwar Owner Secure</span>
-                </div>
-                <div class="space-y-2.5 text-xs">
-                    <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Total System Active Users:</span><span class="font-mono text-cyan-400 font-bold">4,912</span></div>
-                    <div class="space-y-1.5">
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wide">Live Global Stream Tracking Nodes:</p>
-                        <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800 space-y-1 text-[10px] font-mono text-emerald-400">
-                            <div><i class="fa-solid fa-location-dot mr-1 text-amber-400"></i> User_382: Raipur, CG | UPSC Mock</div>
-                            <div><i class="fa-solid fa-location-dot mr-1 text-sky-400"></i> User_904: Lucknow, UP | UP Police Reels</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glassmorphism p-5 rounded-2xl">
+                        <h3 class="text-sm font-bold text-cyan-400 mb-3"><i class="fa-solid fa-download mr-2"></i> Important Govt Books & PYQs</h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="p-3 bg-slate-900/50 border border-white/5 rounded-xl flex justify-between items-center">
+                                <span>UPSC Civil Services Constitution Core (M. Laxmikanth)</span>
+                                <button onclick="alert('Downloading Book File Asset Securely...')" class="bg-cyan-600 px-3 py-1.5 rounded-lg font-bold text-[10px]">Download</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </aside>
+            </section>
+
+            <section id="ticket-section" class="tab-content hidden space-y-6">
+                <div id="travel-lock" class="glassmorphism p-8 rounded-3xl text-center max-w-sm mx-auto">
+                    <i class="fa-solid fa-lock text-4xl text-amber-400 animate-pulse mb-3"></i>
+                    <h3 class="text-md font-bold">Secure Travel Ecosystem Login</h3>
+                    <p class="text-xs text-slate-400 mt-1 mb-4">Ameshwar, please type credentials to enter ticket server gateways.</p>
+                    <input type="text" id="t-user" placeholder="Travel Agent ID" class="w-full bg-slate-900 border border-white/10 p-2.5 rounded-xl text-xs mb-2 text-center text-white focus:outline-none">
+                    <input type="password" id="t-pass" placeholder="Secret Token Key" class="w-full bg-slate-900 border border-white/10 p-2.5 rounded-xl text-xs mb-4 text-center text-white focus:outline-none">
+                    <button onclick="unlockTravel()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-2 rounded-xl text-xs transition-all">Unlock System</button>
+                </div>
+
+                <div id="travel-core" class="hidden space-y-6">
+                    <div class="glassmorphism p-6 rounded-3xl border border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-orange-500/5">
+                        <h2 class="text-lg font-black text-amber-400"><i class="fa-solid fa-compass mr-2"></i> Real-Time Omnipresent Travel Booker</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 mt-4">
+                            <input type="text" placeholder="Origin City" class="bg-slate-900 border border-white/10 p-2.5 text-xs rounded-xl focus:outline-none">
+                            <input type="text" placeholder="Destination" class="bg-slate-900 border border-white/10 p-2.5 text-xs rounded-xl focus:outline-none">
+                            <select class="bg-slate-900 border border-white/10 p-2.5 text-xs rounded-xl focus:outline-none text-slate-400"><option>Train (IRCTC Protocol)</option><option>Bus (AbhiBus System)</option><option>Airplane (IATA Route)</option></select>
+                            <button onclick="alert('Routing real-time ticket engines across multiple Indian networks...')" class="bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs rounded-xl">Book Real Ticket</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="entertainment-section" class="tab-content hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 glassmorphism p-5 rounded-3xl border border-red-500/20">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xs font-bold uppercase text-red-400 tracking-wider"><i class="fa-solid fa-circle animate-ping text-[8px] mr-2 text-red-500"></i> Live Stream Player Simulator</h3>
+                            <span class="text-[9px] bg-red-600 px-2 py-0.5 rounded font-mono">LIVE 1080P Ultra</span>
+                        </div>
+                        <div class="relative w-full h-72 bg-black rounded-2xl flex flex-col justify-center items-center overflow-hidden border border-white/5">
+                            <video id="live-player" class="absolute inset-0 w-full h-full object-cover" poster="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800" controls muted autoplay loop>
+                                <source src="https://assets.mixkit.co/videos/preview/mixkit-stadium-lights-shining-brightly-at-night-42284-large.mp4" type="video/mp4">
+                            </video>
+                            <div class="absolute bottom-14 left-4 bg-black/60 backdrop-blur-md p-3 rounded-xl border border-white/10 pointer-events-none">
+                                <p class="text-xs font-black text-white">INDIA vs AUSTRALIA - Live Match</p>
+                                <p class="text-[10px] text-amber-400 font-bold">Score: 194/2 (18.2 Over)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glassmorphism p-5 rounded-3xl">
+                        <h3 class="text-xs font-bold uppercase text-purple-400 tracking-wider mb-3"><i class="fa-solid fa-clapperboard mr-1.5"></i> Click & Download Movies</h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="p-3 bg-slate-900/40 rounded-xl flex justify-between items-center border border-white/5">
+                                <div><p class="font-bold">Avatar: Fire and Ash (2026)</p><p class="text-[9px] text-slate-400">Dual Audio [Hindi-Eng]</p></div>
+                                <button onclick="alert('Movie streaming cache allocating... Link ready!')" class="p-2 bg-indigo-600 rounded-lg"><i class="fa-solid fa-play"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ai-vision-section" class="tab-content hidden space-y-6">
+                <div class="glassmorphism p-6 rounded-3xl max-w-2xl mx-auto border border-emerald-500/20">
+                    <h3 class="text-md font-bold text-emerald-400"><i class="fa-solid fa-microchip-ai mr-2"></i> AI Vision Optical Scanner Node</h3>
+                    <p class="text-xs text-slate-400 mt-1 mb-4">Point your mobile/laptop camera at any math question, textbook, or diagram. The embedded OCR engine will decode text parameters automatically.</p>
+                    
+                    <div class="relative w-full h-64 bg-slate-950 rounded-2xl border border-emerald-500/30 overflow-hidden flex flex-col justify-center items-center">
+                        <video id="vision-camera" class="absolute inset-0 w-full h-full object-cover" autoplay playsinline></video>
+                        <div class="absolute inset-x-0 h-0.5 bg-emerald-400 scanning-line shadow-[0_0_15px_#10b981]"></div>
+                        <div id="camera-fallback" class="relative z-10 text-center p-4">
+                            <i class="fa-solid fa-camera text-3xl text-emerald-500 animate-pulse mb-2"></i>
+                            <p class="text-xs font-bold">Camera Stream Offline</p>
+                            <button onclick="startCamera()" class="mt-3 bg-emerald-600 text-white font-bold text-[11px] px-4 py-1.5 rounded-xl shadow-md">Grant Camera Permission</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ar-treasure-section" class="tab-content hidden space-y-6">
+                <div class="glassmorphism p-6 rounded-3xl max-w-2xl mx-auto border border-purple-500/20 text-center">
+                    <i class="fa-solid fa-circle-nodes text-4xl text-purple-400 animate-spin-slow mb-3"></i>
+                    <h2 class="text-lg font-extrabold text-purple-400">Augmented Reality (AR) Treasure Hunt</h2>
+                    <p class="text-xs text-slate-400 mt-1 mb-4">ExamVerse AR Matrix places virtual spatial coordinates inside your house or physical classroom. Walk around to collect hidden XP tokens and test answers!</p>
+                    <div class="w-full h-60 bg-gradient-to-b from-purple-950/40 to-slate-950 rounded-2xl border border-purple-500/20 flex flex-col justify-center items-center p-4">
+                        <div class="bg-purple-500/10 text-purple-400 px-4 py-2 rounded-xl text-xs font-mono mb-3 border border-purple-500/20 animate-pulse">
+                            Spatial Tracking Status: Initializing Gyroscope Matrices...
+                        </div>
+                        <button onclick="alert('Initializing WebXR Spatial Tracker Engine... Please tilt your mobile device to scan floor depth.')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-lg">Launch AR Spatial Camera</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-    <!-- SCRIPT DECODER LOGIC LAYER -->
     <script>
-        // Toggle Dark/Light Mode Realtime Matrix Engine
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const themeIcon = document.getElementById("theme-icon");
-            html.classList.toggle("dark");
-            if (html.classList.contains("dark")) {
-                themeIcon.className = "fa-solid fa-sun text-amber-400";
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+        }
+
+        function unlockTravel() {
+            const u = document.getElementById("t-user").value;
+            const p = document.getElementById("t-pass").value;
+            if(u !== "" && p !== "") {
+                document.getElementById("travel-lock").classList.add("hidden");
+                document.getElementById("travel-core").classList.remove("hidden");
             } else {
-                themeIcon.className = "fa-solid fa-moon text-indigo-600";
+                alert("🔒 Authentication Failed! Enter standard operational values.");
             }
         }
 
-        // ChatGPT UI Response Engine Execution Simulator
-        function triggerAICore() {
-            const chatFeed = document.getElementById("chat-feed");
-            const chatInput = document.getElementById("chat-input");
-            if(chatInput.value.trim() === "") return;
-
-            // Append User Query Log Node
-            const userMsg = document.createElement("div");
-            userMsg.className = "flex space-x-2 max-w-[85%] ml-auto justify-end";
-            userMsg.innerHTML = `<div class="bg-slate-200 dark:bg-slate-800 p-3 rounded-2xl rounded-tr-none shadow-sm font-semibold">${chatInput.value}</div>`;
-            chatFeed.appendChild(userMsg);
-
-            // Simulate Engine Evaluation Trigger 
-            const aiLoadingMsg = document.createElement("div");
-            aiLoadingMsg.className = "flex space-x-2 max-w-[85%]";
-            aiLoadingMsg.innerHTML = `<div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tl-none shadow-sm font-medium animate-pulse">Evaluating parameters...</div>`;
-            chatFeed.appendChild(aiLoadingMsg);
-            chatFeed.scrollTop = chatFeed.scrollHeight;
-
-            setTimeout(() => {
-                aiLoadingMsg.innerHTML = `<div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tl-none shadow-sm font-medium">Hello Ameshwar, your query verified against multiple target databases. Processing core structural analytics across relevant UPSC chapters. Status: Successful.</div>`;
-                chatFeed.scrollTop = chatFeed.scrollHeight;
-            }, 1500);
-
-            chatInput.value = "";
+        // Live Camera Scanner Activation Logic via Native HTML5 UserMedia Web API
+        function startCamera() {
+            const video = document.getElementById('vision-camera');
+            const fallback = document.getElementById('camera-fallback');
+            
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    fallback.classList.add('hidden');
+                    alert("✨ Camera Core Activated! AI Optical Scanner is analyzing telemetry bounds.");
+                })
+                .catch(function(error) {
+                    alert("❌ Camera Access Denied or Missing Hardware Hardware Source Node.");
+                    console.log("Camera error: ", error);
+                });
+            } else {
+                alert("Browser does not support Native WebRTC Camera Stream Matrices.");
+            }
         }
-
-        // Initialize Embedded Realtime Charts Framework 
-        document.addEventListener("DOMContentLoaded", () => {
-            const ctx = document.getElementById('perfChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    datasets: [{
-                        label: 'Accuracy Matrix %',
-                        data: [65, 78, 72, 89, 85, 94],
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: { display: false } }, scalar: { y: { min: 50 } } }
-            });
-
-            // Populate Notification System
-            const notifHub = document.getElementById("notification-hub");
-            const notifications = [
-                { text: "UPPSC Civil Services Exam Notification 2026 out.", time: "2m ago", icon: "fa-flag text-indigo-500" },
-                { text: "CGPSC State Mock Answer Key compiled by AI Engine.", time: "1h ago", icon: "fa-key text-emerald-500" },
-                { text: "SSC GD Recruitment Test Metrics Updated.", time: "4h ago", icon: "fa-bullhorn text-amber-500" }
-            ];
-            notifHub.innerHTML = notifications.map(n => `
-                <div class="flex items-start space-x-3 p-2.5 bg-black/5 dark:bg-white/5 rounded-xl text-[11px] border border-black/5 dark:border-white/5">
-                    <i class="fa-solid ${n.icon} mt-0.5"></i>
-                    <div class="flex-1"><p class="font-semibold">${n.text}</p><span class="text-[9px] text-slate-400 font-mono">${n.time}</span></div>
-                </div>
-            `).join('');
-        });
     </script>
 </body>
-  </html>
+</html>
