@@ -4,23 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExamVerse-AI India | Master Unified Administrative Ecosystem</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        upscGold: '#b45309',
-                        upscGoldLight: '#f59e0b',
-                        upscBlue: '#1e3a8a',
-                        upscBlueDark: '#0f172a',
-                        upscSlate: '#334155'
+        if (typeof tailwind !== 'undefined') {
+            tailwind.config = {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        colors: {
+                            upscGold: '#b45309',
+                            upscGoldLight: '#f59e0b',
+                            upscBlue: '#1e3a8a',
+                            upscBlueDark: '#0f172a',
+                            upscSlate: '#334155'
+                        }
                     }
                 }
-            }
+            };
+        } else {
+            console.warn("⚠️ Tailwind CSS CDN could not be loaded or is blocked. Running fallbacks.");
         }
     </script>
+    
     <!-- FontAwesome 6.4.0 for rich modern icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts for custom aesthetic typography -->
@@ -28,6 +34,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <!-- FIREBASE COMPAT SDKs FOR STATIC HTML INTEGRATION -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -175,7 +187,7 @@
                             <div class="flex justify-between"><span class="text-slate-500">Node Status:</span> <span class="text-emerald-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> ESTABLISHED</span></div>
                             <div class="flex justify-between"><span class="text-slate-500">Server Latency:</span> <span class="text-cyan-400">0.03ms</span></div>
                             <div class="flex justify-between"><span class="text-slate-500">Security Token:</span> <span class="text-amber-500">AES-256-GCM</span></div>
-                            <div class="flex justify-between"><span class="text-slate-500">Gateway Traffic:</span> <span class="text-slate-300 font-bold">Optimal</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Database Engine:</span> <span id="firebase-status-label" class="text-rose-500 font-bold">Offline Local</span></div>
                         </div>
                     </div>
                 </div>
@@ -213,6 +225,17 @@
                         <button onclick="executeSecureLoginSequence()" class="w-full bg-blue-900 hover:bg-blue-800 dark:bg-amber-600 dark:hover:bg-amber-700 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-2 transition-all">
                             <span>Decrypt Credentials & Authenticate</span> <i class="fa-solid fa-key"></i>
                         </button>
+
+                        <div class="relative flex py-2 items-center">
+                            <div class="flex-grow border-t border-slate-300 dark:border-slate-800"></div>
+                            <span class="flex-shrink mx-4 text-slate-400 text-[10px] uppercase font-mono">Or secure provider</span>
+                            <div class="flex-grow border-t border-slate-300 dark:border-slate-800"></div>
+                        </div>
+
+                        <button onclick="executeGoogleAuthFlow()" class="w-full bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-850 border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114A5.72 5.72 0 0 1 8.24 12.8a5.72 5.72 0 0 1 5.751-5.714c1.47 0 2.825.532 3.87 1.411l3.056-3.056A9.92 9.92 0 0 0 13.99 2C8.474 2 4 6.474 4 12s4.474 10 9.99 10c5.385 0 9.771-4.114 9.771-9.943 0-.629-.074-1.229-.185-1.771H12.24z"/></svg>
+                            <span>Authenticate with Google Account</span>
+                        </button>
                     </div>
 
                     <!-- SIGN UP PORTAL FORM -->
@@ -225,10 +248,17 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Active Contact Matrix Number</label>
+                            <label class="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">OTR Email Address</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-phone-volume text-xs"></i></span>
-                                <input type="tel" id="signup-phone-input" placeholder="+91 98765 43210" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-800 dark:text-white transition-all">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-envelope text-xs"></i></span>
+                                <input type="email" id="signup-email-input" placeholder="candidate@examverse.gov.in" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-800 dark:text-white transition-all">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Security Password</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-lock text-xs"></i></span>
+                                <input type="password" id="signup-pass-input" placeholder="••••••••" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-800 dark:text-white transition-all">
                             </div>
                         </div>
                         <button onclick="handleGatewayRegisterSubmit()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-2 transition-all">
@@ -402,15 +432,8 @@
                             <button onclick="openEcosystemDrawer('Discussion Forum')" class="text-[10px] text-indigo-600 dark:text-purple-400 font-bold hover:underline">Launch Lobby</button>
                         </div>
                         
-                        <div id="p2p-live-lobby" class="space-y-2 max-h-36 overflow-y-auto pr-1 mb-3 text-xs">
-                            <div class="p-2.5 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
-                                <span class="font-bold text-[10px] text-blue-900 dark:text-amber-400">Amitesh_Sinha:</span>
-                                <span class="text-slate-600 dark:text-slate-300">Has anyone read the latest economic survey for UPSC? Is fiscal framework 4.0 critical?</span>
-                            </div>
-                            <div class="p-2.5 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
-                                <span class="font-bold text-[10px] text-blue-900 dark:text-amber-400">Rajesh_Kumar:</span>
-                                <span class="text-slate-600 dark:text-slate-300">Yes, the agricultural productivity models are super important for GS Paper 3.</span>
-                            </div>
+                        <div id="p2p-live-lobby" class="space-y-2 max-h-36 overflow-y-auto pr-1 mb-3 text-xs font-mono">
+                            <div class="text-slate-400 text-center py-4">Connecting to Firestore Live Sync...</div>
                         </div>
 
                         <!-- Mini quick message submit -->
@@ -469,7 +492,7 @@
                 <div id="active-quiz-terminal" class="adaptive-glass p-6 rounded-3xl max-w-xl mx-auto hidden border relative overflow-hidden">
                     <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
                         <span id="quiz-badge-category" class="text-[10px] font-black uppercase tracking-wider bg-blue-900 dark:bg-amber-600 text-white dark:text-slate-950 px-2.5 py-1 rounded-md">Category</span>
-                        <span class="text-xs font-mono">Score Data: <b id="quiz-score-node" class="text-amber-600 dark:text-amber-400">0</b> XP</span>
+                        <span class="text-xs font-mono">My Real Score: <b id="quiz-score-node" class="text-amber-600 dark:text-amber-400">0</b> XP</span>
                     </div>
                     <h3 id="quiz-question-node" class="text-sm font-extrabold mb-4 text-slate-800 dark:text-white">Active question asset calculations initializing...</h3>
                     <div id="quiz-options-box" class="space-y-2 text-xs"></div>
@@ -583,6 +606,46 @@
 
     <!-- CORE SYSTEM SCRIPT LAYERS -->
     <script>
+        // ==========================================
+        // 🔑 FIREBASE CONFIGURATION CONFIG & INIT
+        // ==========================================
+        
+        // PASTE YOUR FIREBASE WEB CONFIG OBJECT FROM CONSOLE HERE:
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-YOUR-REAL-API-KEY-HERE",
+            authDomain: "examverse-ai-india.firebaseapp.com",
+            projectId: "examverse-ai-india",
+            storageBucket: "examverse-ai-india.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef1234567890"
+        };
+
+        let isFirebaseInitialized = false;
+        let db = null;
+        let auth = null;
+        let storage = null;
+        let loggedUserObj = null;
+
+        // Auto initialization checking
+        try {
+            if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("YOUR-REAL-API-KEY")) {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                auth = firebase.auth();
+                storage = firebase.storage();
+                isFirebaseInitialized = true;
+                
+                // Update label
+                document.getElementById("firebase-status-label").innerText = "Firebase Live Active";
+                document.getElementById("firebase-status-label").className = "text-emerald-400 font-bold flex items-center gap-1";
+                console.log("🔥 Firebase successfully synchronized and active.");
+            } else {
+                console.warn("⚠️ Firebase credentials not configured. Operating in dynamic offline simulation mode.");
+            }
+        } catch (error) {
+            console.error("❌ Firebase initial sync failure: ", error);
+        }
+
         // System Theme Management Framework
         function toggleEcosystemTheme() {
             const documentHtml = document.documentElement;
@@ -591,14 +654,14 @@
             
             if (documentHtml.classList.contains('dark')) {
                 documentHtml.classList.remove('dark');
-                themeIcon.className = "fa-solid fa-moon";
-                themeText.innerText = "Dark Mode Off";
+                if (themeIcon) themeIcon.className = "fa-solid fa-moon";
+                if (themeText) themeText.innerText = "Dark Mode Off";
                 localStorage.setItem('examverse-master-theme', 'light');
                 showToastNotification("Switched to Light Administrative Interface", "info");
             } else {
                 documentHtml.classList.add('dark');
-                themeIcon.className = "fa-solid fa-sun";
-                themeText.innerText = "Dark Mode On";
+                if (themeIcon) themeIcon.className = "fa-solid fa-sun";
+                if (themeText) themeText.innerText = "Dark Mode On";
                 localStorage.setItem('examverse-master-theme', 'dark');
                 showToastNotification("Switched to Deep Obsidian-Gold Interface", "success");
             }
@@ -696,42 +759,149 @@
             }
         }
 
+        // Real Firebase Email / Password authentication logic
         function executeSecureLoginSequence() {
+            const email = document.getElementById("signin-email-input").value.trim();
+            const password = document.getElementById("signin-pass-input").value.trim();
+
+            if (!email || !password) {
+                showToastNotification("⚠️ Complete email and password fields.", "error");
+                return;
+            }
+
             const overlay = document.getElementById("gate-loader-overlay");
             const progressText = document.getElementById("loader-progress-text");
             overlay.classList.remove("hidden");
-            
-            const steps = [
-                "Establishing secure handshakes with UPSC Node...",
-                "Running biometric validation protocols...",
-                "Decrypting candidates structural matrices...",
-                "Mapping user identity token parameters..."
-            ];
-            
-            let currentStep = 0;
-            const stepInterval = setInterval(() => {
-                if (currentStep < steps.length) {
-                    progressText.innerText = steps[currentStep];
-                    currentStep++;
-                } else {
-                    clearInterval(stepInterval);
-                    overlay.classList.add("hidden");
-                    bypassGatewayAuth("Ameshwar Dewangan");
-                }
-            }, 550);
+            progressText.innerText = "Connecting to UPSC Gate Matrix...";
+
+            if (isFirebaseInitialized) {
+                // REAL FIREBASE SIGN IN
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        progressText.innerText = "Decrypting profiles...";
+                        
+                        // Fetch User Metadata from Firestore
+                        db.collection("users").doc(user.uid).get().then((doc) => {
+                            let resolvedName = user.displayName || "Aspirant";
+                            if (doc.exists) {
+                                resolvedName = doc.data().displayName;
+                                activeQuizScore = doc.data().xp || 0;
+                                document.getElementById("quiz-score-node").innerText = activeQuizScore;
+                            }
+                            overlay.classList.add("hidden");
+                            bypassGatewayAuth(resolvedName, user);
+                        });
+                    })
+                    .catch((error) => {
+                        overlay.classList.add("hidden");
+                        showToastNotification("❌ Auth Failed: " + error.message, "error");
+                    });
+            } else {
+                // Offline fallback mode mock logic
+                setTimeout(() => {
+                    progressText.innerText = "Mock credentials mapping...";
+                    setTimeout(() => {
+                        overlay.classList.add("hidden");
+                        bypassGatewayAuth("Ameshwar Dewangan", null);
+                    }, 500);
+                }, 500);
+            }
         }
 
-        function handleGatewayRegisterSubmit() {
-            const nameInput = document.getElementById("signup-name-input").value.trim();
-            if(!nameInput) {
-                showToastNotification("⚠️ OTR Full Legal Name cannot remain empty.", "error");
+        // Real Google Account Sign-In with popup
+        function executeGoogleAuthFlow() {
+            if (!isFirebaseInitialized) {
+                showToastNotification("⚠️ Please connect Firebase API configuration to enable Google Authentication.", "error");
                 return;
             }
-            showToastNotification("OTR Registration Successful!", "success");
-            bypassGatewayAuth(nameInput);
+
+            const overlay = document.getElementById("gate-loader-overlay");
+            const progressText = document.getElementById("loader-progress-text");
+            overlay.classList.remove("hidden");
+            progressText.innerText = "Authenticating Google credentials provider...";
+
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    progressText.innerText = "Storing dynamic session data...";
+                    
+                    // Create/Update user document in Firestore
+                    const userRef = db.collection("users").doc(user.uid);
+                    userRef.get().then((doc) => {
+                        if (!doc.exists) {
+                            userRef.set({
+                                displayName: user.displayName,
+                                email: user.email,
+                                xp: 0,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                            activeQuizScore = 0;
+                        } else {
+                            activeQuizScore = doc.data().xp || 0;
+                        }
+                        document.getElementById("quiz-score-node").innerText = activeQuizScore;
+                        overlay.classList.add("hidden");
+                        bypassGatewayAuth(user.displayName, user);
+                    });
+                })
+                .catch((error) => {
+                    overlay.classList.add("hidden");
+                    showToastNotification("❌ Google Sign-In Failed: " + error.message, "error");
+                });
         }
 
-        function bypassGatewayAuth(resolvedIdentity) {
+        // Real OTR registration via Firebase Email/Pass
+        function handleGatewayRegisterSubmit() {
+            const name = document.getElementById("signup-name-input").value.trim();
+            const email = document.getElementById("signup-email-input").value.trim();
+            const password = document.getElementById("signup-pass-input").value.trim();
+
+            if (!name || !email || !password) {
+                showToastNotification("⚠️ All fields must be completely populated.", "error");
+                return;
+            }
+
+            const overlay = document.getElementById("gate-loader-overlay");
+            const progressText = document.getElementById("loader-progress-text");
+            overlay.classList.remove("hidden");
+            progressText.innerText = "Deploying secure identity payload...";
+
+            if (isFirebaseInitialized) {
+                // REAL SIGN UP
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        
+                        // Store full name in Firestore
+                        db.collection("users").doc(user.uid).set({
+                            displayName: name,
+                            email: email,
+                            xp: 0,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }).then(() => {
+                            overlay.classList.add("hidden");
+                            showToastNotification("OTR Registration Successful!", "success");
+                            bypassGatewayAuth(name, user);
+                        });
+                    })
+                    .catch((error) => {
+                        overlay.classList.add("hidden");
+                        showToastNotification("❌ Registration Failed: " + error.message, "error");
+                    });
+            } else {
+                // Offline Fallback
+                setTimeout(() => {
+                    overlay.classList.add("hidden");
+                    showToastNotification("OTR Registered (Local Static Mode)", "success");
+                    bypassGatewayAuth(name, null);
+                }, 800);
+            }
+        }
+
+        function bypassGatewayAuth(resolvedIdentity, firebaseUser) {
+            loggedUserObj = firebaseUser;
             document.getElementById("identity-badge-label").innerText = resolvedIdentity;
             document.getElementById("splash-gateway").classList.add("hidden");
             
@@ -739,12 +909,22 @@
             const mainApp = document.getElementById("main-application-matrix");
             mainApp.classList.remove("hidden");
             setTimeout(() => mainApp.classList.add("opacity-100"), 50);
+            
+            // Trigger Firestore live chat listener if connected
+            initializeLiveDiscussionFeed();
+
             showToastNotification(`Welcome to Unified Command Matrix, ${resolvedIdentity}!`, "success");
         }
 
         function terminateGatewaySession() {
             showConfirmModal("Logout Session", "Are you sure you want to exit the secure administrative ecosystem?", () => {
-                location.reload();
+                if (isFirebaseInitialized && auth) {
+                    auth.signOut().then(() => {
+                        location.reload();
+                    });
+                } else {
+                    location.reload();
+                }
             });
         }
 
@@ -775,15 +955,20 @@
             // Generate customized interfaces according to user action targets
             let interfaceHTML = "";
             if(moduleName.includes("Profile")) {
+                const curName = document.getElementById("identity-badge-label").innerText;
                 interfaceHTML = `
                     <div class="space-y-4 text-xs font-mono">
                         <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
                             <p class="text-slate-400">OTR IDENTITY SPECIFICATION</p>
-                            <p class="text-sm font-extrabold mt-1 text-slate-800 dark:text-white">Ameshwar Dewangan</p>
+                            <p class="text-sm font-extrabold mt-1 text-slate-800 dark:text-white">${curName}</p>
                         </div>
                         <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
                             <p class="text-slate-400">AUTHENTICATED CREDENTIAL TOKEN</p>
-                            <p class="text-sm font-extrabold mt-1 text-emerald-500">AES-256 SECURE PROFILE SYNC</p>
+                            <p class="text-sm font-extrabold mt-1 text-emerald-500">${isFirebaseInitialized ? 'SECURE FIREBASE ENGINE' : 'LOCAL SIMULATED CLIENT'}</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+                            <p class="text-slate-400">XP ACCURACY SCORE</p>
+                            <p class="text-sm font-extrabold mt-1 text-amber-500">${activeQuizScore} XP</p>
                         </div>
                     </div>
                 `;
@@ -798,7 +983,7 @@
                             <!-- Real-time mock response generated -->
                         </div>
                         
-                        <button onclick="runMockAIGeneration()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold">Synthesize Generative Response</button>
+                        <button onclick="runMockAIGeneration()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold font-mono">Synthesize Generative Response</button>
                     </div>
                 `;
             } else if(moduleName.includes("QR Terminal Scanner")) {
@@ -820,17 +1005,18 @@
                 interfaceHTML = `
                     <div class="space-y-4 text-xs">
                         <p class="text-slate-400">Select files to compress, split or sign matching government size limit guidelines (under 2MB).</p>
-                        <div class="p-6 border-2 border-dashed border-slate-300 dark:border-slate-800 rounded-2xl text-center bg-slate-50 dark:bg-slate-900/40">
+                        <div class="p-6 border-2 border-dashed border-slate-300 dark:border-slate-800 rounded-2xl text-center bg-slate-50 dark:bg-slate-900/40 cursor-pointer" onclick="document.getElementById('drawer-pdf-file').click()">
                             <i class="fa-regular fa-file-pdf text-4xl text-red-500 mb-2"></i>
-                            <p class="font-bold">Drag and drop UPSC Syllabus PDF here</p>
+                            <p class="font-bold">Drag and drop or click to upload PDF</p>
+                            <input type="file" id="drawer-pdf-file" class="hidden" onchange="uploadFileToFirebaseStorage(this)">
                         </div>
                         <div id="pdf-progress-bar-container" class="hidden">
-                            <p class="text-[10px] text-slate-500 mb-1">Compressing payload...</p>
+                            <p id="pdf-upload-status" class="text-[10px] text-slate-500 mb-1">Compressing payload...</p>
                             <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
-                                <div id="pdf-progress-fill" class="bg-amber-500 h-full w-0 transition-all duration-1000"></div>
+                                <div id="pdf-progress-fill" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
                             </div>
                         </div>
-                        <button onclick="simulatePDFConversion()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold">Start Conversion</button>
+                        <button onclick="simulatePDFConversion()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold">Start Secure Upload</button>
                     </div>
                 `;
             } else if(moduleName.includes("AES Key Locker")) {
@@ -845,6 +1031,17 @@
                         <button onclick="saveSecretToVault()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold">Lock and Encrypt</button>
                     </div>
                 `;
+            } else if(moduleName.includes("Leaderboard")) {
+                interfaceHTML = `
+                    <div class="space-y-4 text-xs">
+                        <p class="text-slate-400">Live scoring system tracking real-time candidates directly inside Firebase DB.</p>
+                        <div id="leaderboard-list" class="space-y-2 max-h-72 overflow-y-auto font-mono">
+                            <div class="text-slate-400 text-center py-4">Fetching leaderboard metrics...</div>
+                        </div>
+                    </div>
+                `;
+                // Trigger dynamic leaderboard loading
+                setTimeout(loadLiveLeaderboardMetrics, 100);
             } else {
                 interfaceHTML = `
                     <div class="space-y-4 text-xs text-center py-8">
@@ -864,7 +1061,185 @@
             setTimeout(() => drawer.classList.add("hidden"), 500);
         }
 
-        // --- DYNAMIC UTILITY MOCK EXECUTION TRIGGERS ---
+        // --- REAL TIME FIREBASE DISCUSSION FORUM SYNC ---
+        function initializeLiveDiscussionFeed() {
+            const lobby = document.getElementById("p2p-live-lobby");
+            if (!lobby) return;
+
+            if (isFirebaseInitialized) {
+                // Real-time Firestore document sync listener
+                db.collection("discussion_forum")
+                  .orderBy("timestamp", "asc")
+                  .limitToLast(15)
+                  .onSnapshot((snapshot) => {
+                      lobby.innerHTML = "";
+                      if (snapshot.empty) {
+                          lobby.innerHTML = `<div class="text-slate-500 text-center py-4">No active communications. Post a message to initiate!</div>`;
+                          return;
+                      }
+                      snapshot.forEach((doc) => {
+                          const data = doc.data();
+                          const msg = document.createElement("div");
+                          msg.className = "p-2.5 bg-blue-500/5 dark:bg-amber-500/5 rounded-xl border border-blue-900/10 dark:border-amber-500/10 text-xs";
+                          msg.innerHTML = `<span class="font-bold text-[10px] text-blue-900 dark:text-amber-400">${data.username}:</span> <span class="text-slate-600 dark:text-slate-300">${escapeHTML(data.message)}</span>`;
+                          lobby.appendChild(msg);
+                      });
+                      lobby.scrollTop = lobby.scrollHeight;
+                  }, (error) => {
+                      console.error("Firestore live feed error: ", error);
+                  });
+            } else {
+                // Simulate pre-loaded messages
+                lobby.innerHTML = `
+                    <div class="p-2.5 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span class="font-bold text-[10px] text-blue-900 dark:text-amber-400">Amitesh_Sinha:</span>
+                        <span class="text-slate-600 dark:text-slate-300">Has anyone read the latest economic survey for UPSC? Is fiscal framework 4.0 critical?</span>
+                    </div>
+                    <div class="p-2.5 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <span class="font-bold text-[10px] text-blue-900 dark:text-amber-400">Rajesh_Kumar:</span>
+                        <span class="text-slate-600 dark:text-slate-300">Yes, the agricultural productivity models are super important for GS Paper 3.</span>
+                    </div>
+                `;
+            }
+        }
+
+        function postQuickP2PMessage() {
+            const input = document.getElementById("p2p-quick-input");
+            const val = input.value.trim();
+            if(!val) return;
+            
+            const currentName = document.getElementById("identity-badge-label").innerText;
+
+            if (isFirebaseInitialized) {
+                // WRITE MESSAGE TO CLOUD FIRESTORE
+                db.collection("discussion_forum").add({
+                    username: currentName,
+                    message: val,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    input.value = "";
+                }).catch((error) => {
+                    showToastNotification("Failed to broadcast message: " + error.message, "error");
+                });
+            } else {
+                // Local Push Simulation
+                const lobby = document.getElementById("p2p-live-lobby");
+                const msg = document.createElement("div");
+                msg.className = "p-2.5 bg-blue-500/5 dark:bg-amber-500/5 rounded-xl border border-blue-900/20 dark:border-amber-500/20";
+                msg.innerHTML = `<span class="font-bold text-[10px] text-emerald-600 dark:text-emerald-400">${currentName} (You):</span> <span class="text-slate-600 dark:text-slate-300">${escapeHTML(val)}</span>`;
+                lobby.appendChild(msg);
+                input.value = "";
+                lobby.scrollTop = lobby.scrollHeight;
+                showToastNotification("Message published to local exam lobby", "success");
+            }
+        }
+
+        // Load real-time database high score ladder
+        function loadLiveLeaderboardMetrics() {
+            const parent = document.getElementById("leaderboard-list");
+            if (!parent) return;
+
+            if (isFirebaseInitialized) {
+                db.collection("users")
+                  .orderBy("xp", "desc")
+                  .limit(10)
+                  .get()
+                  .then((snapshot) => {
+                      parent.innerHTML = "";
+                      let idx = 1;
+                      snapshot.forEach((doc) => {
+                          const data = doc.data();
+                          const card = document.createElement("div");
+                          card.className = "p-3 bg-slate-100/50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl flex justify-between items-center text-xs";
+                          card.innerHTML = `
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-amber-500">#${idx++}</span>
+                                <span class="font-extrabold text-slate-800 dark:text-slate-200">${data.displayName}</span>
+                            </div>
+                            <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 text-[10px] px-2.5 py-1 rounded-lg font-bold font-mono">${data.xp || 0} XP</span>
+                          `;
+                          parent.appendChild(card);
+                      });
+                  })
+                  .catch((err) => {
+                      parent.innerHTML = `<div class="text-rose-500 text-center py-2">Error connecting database metrics.</div>`;
+                  });
+            } else {
+                parent.innerHTML = `
+                    <div class="p-3 bg-slate-100/50 dark:bg-slate-900/50 rounded-xl flex justify-between items-center">
+                        <span>#1 Ameshwar Dewangan</span> <span class="text-amber-500 font-bold">14,250 XP</span>
+                    </div>
+                    <div class="p-3 bg-slate-100/50 dark:bg-slate-900/50 rounded-xl flex justify-between items-center">
+                        <span>#2 Amit_Sinha</span> <span class="text-slate-400 font-bold">12,100 XP</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Firebase Cloud Storage upload mechanics
+        let selectedStorageFileObj = null;
+        function uploadFileToFirebaseStorage(inputNode) {
+            if (inputNode.files.length === 0) return;
+            selectedStorageFileObj = inputNode.files[0];
+            showToastNotification(`Target selected: ${selectedStorageFileObj.name}`, "info");
+        }
+
+        function simulatePDFConversion() {
+            if (!isFirebaseInitialized) {
+                // Simulate local fallback
+                const bar = document.getElementById("pdf-progress-bar-container");
+                const fill = document.getElementById("pdf-progress-fill");
+                bar.classList.remove("hidden");
+                fill.style.width = "0%";
+                setTimeout(() => { fill.style.width = "100%"; }, 100);
+
+                setTimeout(() => {
+                    showToastNotification("PDF compressed to 1.84MB (Within 2MB UPSC limits)", "success");
+                    closeEcosystemDrawer();
+                }, 1200);
+                return;
+            }
+
+            if (!selectedStorageFileObj) {
+                showToastNotification("⚠️ Please choose a valid PDF file.", "error");
+                return;
+            }
+
+            const bar = document.getElementById("pdf-progress-bar-container");
+            const fill = document.getElementById("pdf-progress-fill");
+            const label = document.getElementById("pdf-upload-status");
+            
+            bar.classList.remove("hidden");
+            fill.style.width = "0%";
+            label.innerText = "Initiating handshake with Firebase Storage...";
+
+            const user = auth.currentUser;
+            const uid = user ? user.uid : "anonymous";
+            const storageRef = storage.ref(`users/${uid}/documents/${Date.now()}_${selectedStorageFileObj.name}`);
+            
+            const uploadTask = storageRef.put(selectedStorageFileObj);
+
+            uploadTask.on('state_changed', 
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    fill.style.width = progress + '%';
+                    label.innerText = `Uploading payload... ${Math.round(progress)}%`;
+                }, 
+                (error) => {
+                    showToastNotification("❌ Upload failure: " + error.message, "error");
+                }, 
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        showToastNotification("File compiled to Cloud Storage successfully!", "success");
+                        console.log("Uploaded URL: ", downloadURL);
+                        closeEcosystemDrawer();
+                        selectedStorageFileObj = null;
+                    });
+                }
+            );
+        }
+
+        // --- DYNAMIC EXTRA ACTION GENERATIONS ---
         function runMockAIGeneration() {
             const prompt = document.getElementById("ai-custom-prompt").value.trim();
             if(!prompt) {
@@ -879,19 +1254,6 @@
                 term.innerText = `[PROMPT]: "${prompt}"\n\n[RESPONSE]: Ameshwar Dewangan, based on the standard Union Administration criteria, the dynamic parameters matching your request have been decrypted successfully. Let us focus on the agricultural productivity guidelines in the latest plans.`;
                 showToastNotification("Generative response compiled!", "success");
             }, 800);
-        }
-
-        function simulatePDFConversion() {
-            const bar = document.getElementById("pdf-progress-bar-container");
-            const fill = document.getElementById("pdf-progress-fill");
-            bar.classList.remove("hidden");
-            fill.style.width = "0%";
-            setTimeout(() => { fill.style.width = "100%"; }, 100);
-
-            setTimeout(() => {
-                showToastNotification("PDF compressed to 1.84MB (Within 2MB UPSC limits)", "success");
-                closeEcosystemDrawer();
-            }, 1200);
         }
 
         function saveSecretToVault() {
@@ -951,31 +1313,26 @@
             if(userChoice === correctChoice) {
                 buttonElement.className = "w-full text-left p-3.5 bg-emerald-500/10 border border-emerald-500 rounded-xl text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-between animate-pulse";
                 buttonElement.querySelector("i").className = "fa-solid fa-circle-check text-emerald-400 text-xs";
+                
+                // Add points
                 activeQuizScore += 50;
                 document.getElementById("quiz-score-node").innerText = activeQuizScore;
-                showToastNotification("Gained +50 XP Score Points!", "success");
+
+                // PERSIST SCORE INCREMENT TO CLOUD FIRESTORE
+                if (isFirebaseInitialized && auth.currentUser) {
+                    db.collection("users").doc(auth.currentUser.uid).update({
+                        xp: firebase.firestore.FieldValue.increment(50)
+                    }).then(() => {
+                        showToastNotification("Score synced with cloud: +50 XP Gained!", "success");
+                    });
+                } else {
+                    showToastNotification("Gained +50 XP Score Points! (Local)", "success");
+                }
             } else {
                 buttonElement.className = "w-full text-left p-3.5 bg-rose-500/10 border border-rose-500 rounded-xl text-rose-600 dark:text-rose-400 font-bold flex items-center justify-between";
                 buttonElement.querySelector("i").className = "fa-solid fa-circle-xmark text-rose-400 text-xs";
                 showToastNotification("Answer Verification Failure.", "error");
             }
-        }
-
-        // --- P2P LIVE DISCUSSION LOBBY SIMULATOR ---
-        function postQuickP2PMessage() {
-            const input = document.getElementById("p2p-quick-input");
-            const val = input.value.trim();
-            if(!val) return;
-            
-            const lobby = document.getElementById("p2p-live-lobby");
-            const msg = document.createElement("div");
-            msg.className = "p-2.5 bg-blue-500/5 dark:bg-amber-500/5 rounded-xl border border-blue-900/20 dark:border-amber-500/20";
-            msg.innerHTML = `<span class="font-bold text-[10px] text-emerald-600 dark:text-emerald-400">Ameshwar (You):</span> <span class="text-slate-600 dark:text-slate-300">${val}</span>`;
-            lobby.appendChild(msg);
-            
-            input.value = "";
-            lobby.scrollTop = lobby.scrollHeight;
-            showToastNotification("Message published to global exam lobby", "success");
         }
 
         // --- DYNAMIC CONTINUOUS POPULATION SIMULATORS ---
@@ -1082,6 +1439,13 @@
             });
 
             requestAnimationFrame(animateCanvas);
+        }
+
+        // Escape helper to prevent HTML injection in dynamic live discussions
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
         }
 
         window.addEventListener("resize", resizeCanvas);
