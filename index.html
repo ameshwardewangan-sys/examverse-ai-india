@@ -12,218 +12,325 @@
                 extend: {
                     colors: {
                         upscGold: '#b45309',
+                        upscGoldLight: '#f59e0b',
                         upscBlue: '#1e3a8a',
+                        upscBlueDark: '#0f172a',
                         upscSlate: '#334155'
                     }
                 }
             }
         }
     </script>
+    <!-- FontAwesome 6.4.0 for rich modern icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts for custom aesthetic typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* Glassmorphism System */
         .adaptive-glass {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(30, 58, 138, 0.15);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(30, 58, 138, 0.12);
         }
         .dark .adaptive-glass {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(180, 83, 9, 0.2);
         }
-        .upsc-shadow { box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.15); }
-        .dark .upsc-shadow { box-shadow: 0 10px 25px -5px rgba(180, 83, 9, 0.2); }
+        .upsc-shadow {
+            box-shadow: 0 10px 30px -5px rgba(30, 58, 138, 0.1);
+        }
+        .dark .upsc-shadow {
+            box-shadow: 0 10px 30px -5px rgba(180, 83, 9, 0.15);
+        }
+        /* Dynamic Shimmer and Glow Systems */
+        @keyframes subtleGlow {
+            0%, 100% { border-color: rgba(180, 83, 9, 0.2); box-shadow: 0 0 15px rgba(180, 83, 9, 0.05); }
+            50% { border-color: rgba(180, 83, 9, 0.6); box-shadow: 0 0 25px rgba(180, 83, 9, 0.2); }
+        }
+        .premium-border-glow {
+            animation: subtleGlow 4s ease-in-out infinite;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b45309;
+            border-radius: 10px;
+        }
+        /* Advanced Keyframe Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.01); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes spinSlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 20s linear infinite;
+        }
+        @keyframes pulseGold {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+        .pulse-gold {
+            animation: pulseGold 2s infinite ease-in-out;
+        }
+        /* Scanning Laser effect */
+        @keyframes laserScan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        .laser-scanner {
+            animation: laserScan 2.5s infinite linear;
+        }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-800 dark:bg-[#090d16] dark:text-slate-100 min-h-screen transition-colors duration-300 pb-20 md:pb-6 overflow-x-hidden">
+<body class="bg-[#f1f5f9] text-slate-800 dark:bg-[#030712] dark:text-slate-100 min-h-screen transition-colors duration-500 pb-20 md:pb-6 overflow-x-hidden relative">
+
+    <!-- CANVAS INTERACTIVE BACKGROUND MESH -->
+    <canvas id="mesh-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40 dark:opacity-30"></canvas>
 
     <!-- TOP BRANDING & CONTROLLER HEADER -->
-    <header class="w-full bg-white dark:bg-[#0f172a] border-b-4 border-amber-600 py-3 px-4 md:px-8 shadow-md flex justify-between items-center transition-colors">
+    <header class="w-full bg-white/90 dark:bg-[#0b0f19]/90 backdrop-blur-md border-b-4 border-amber-600 py-4 px-4 md:px-8 shadow-lg flex justify-between items-center transition-colors relative z-40">
         <div class="flex items-center space-x-4">
-            <div class="bg-gradient-to-br from-amber-600 to-amber-700 p-2.5 rounded-full text-white shadow-md">
-                <i class="fa-solid fa-building-columns text-xl"></i>
+            <div class="bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 p-3 rounded-2xl text-white shadow-xl flex items-center justify-center relative overflow-hidden">
+                <i class="fa-solid fa-building-columns text-2xl relative z-10"></i>
+                <div class="absolute inset-0 bg-white/10 transform rotate-12 scale-150"></div>
             </div>
             <div>
                 <div class="flex items-center space-x-2">
-                    <span class="heading-font text-xl md:text-2xl font-black text-blue-900 dark:text-amber-400 tracking-tight">EXAMVERSE-AI-INDIA</span>
+                    <span class="heading-font text-xl md:text-3xl font-black text-blue-900 dark:text-amber-400 tracking-tight flex items-center gap-1.5">
+                        EXAMVERSE-AI-INDIA
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full border border-emerald-500/20 font-mono font-medium tracking-normal">LIVE GATE</span>
+                    </span>
                 </div>
-                <p class="text-[10px] uppercase font-black tracking-widest text-slate-500 dark:text-slate-400 hidden sm:block">Digital Anticipatory Ecosystem Framework • Architect: Ameshwar Dewangan</p>
+                <p class="text-[10px] uppercase font-bold tracking-widest text-slate-500 dark:text-slate-400 hidden sm:block">Digital Anticipatory Ecosystem Framework • Architect: Ameshwar Dewangan</p>
             </div>
         </div>
         
         <div class="flex items-center space-x-3">
-            <button onclick="toggleEcosystemTheme()" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 p-2 rounded-xl text-slate-700 dark:text-amber-400 text-sm transition-all flex items-center gap-2">
+            <button onclick="toggleEcosystemTheme()" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 p-2.5 rounded-xl text-slate-700 dark:text-amber-400 text-sm transition-all flex items-center gap-2 border border-slate-300 dark:border-slate-700">
                 <i id="theme-icon" class="fa-solid fa-moon"></i>
-                <span id="theme-text" class="text-xs hidden sm:inline">Theme</span>
+                <span id="theme-text" class="text-xs hidden sm:inline">Theme Matrix</span>
             </button>
-            <button onclick="terminateGatewaySession()" class="hidden id-badge-node bg-amber-600 text-white font-bold px-3 py-2 rounded-xl text-xs shadow-md">
-                <i class="fa-solid fa-user-tie mr-1.5"></i> <span id="identity-badge-label">Ameshwar</span>
+            <button onclick="terminateGatewaySession()" class="hidden id-badge-node bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-2.5 rounded-xl text-xs shadow-xl flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-user-shield"></i> <span id="identity-badge-label">Ameshwar</span>
             </button>
         </div>
     </header>
 
-    <!-- OFFICIAL UPSC AUTH GATEWAY MIRROR -->
-    <div id="splash-gateway" class="w-full max-w-4xl mx-auto my-12 p-4 transition-all duration-500">
-        <div class="bg-white dark:bg-[#0f172a] rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden grid grid-cols-1 md:grid-cols-5">
-            <div class="md:col-span-2 bg-gradient-to-br from-blue-900 to-indigo-950 p-6 text-white flex flex-col justify-between">
-                <div>
-                    <h3 class="heading-font text-sm font-bold text-amber-400 border-b border-white/10 pb-2 mb-3"><i class="fa-solid fa-circle-info mr-2"></i> System Gate Access</h3>
-                    <ul class="space-y-2 text-[11px] text-slate-300 list-disc list-inside leading-relaxed">
-                        <li>AI-Powered Personalized Dashboard Integration initialized.</li>
-                        <li>Live Doubt Solving & Anticipatory engines operational.</li>
-                        <li>Identity mapping links directly to central secure ledger tokens.</li>
-                    </ul>
+    <!-- OFFICIAL UPSC AUTH GATEWAY MIRROR (ULTRA-PREMIUM REDESIGNED EDITION) -->
+    <div id="splash-gateway" class="w-full max-w-5xl mx-auto my-12 p-4 transition-all duration-700 relative z-10">
+        <div class="bg-white/80 dark:bg-[#0a0f1d]/85 rounded-3xl shadow-2xl border-2 border-slate-200 dark:border-amber-900/30 overflow-hidden grid grid-cols-1 md:grid-cols-5 relative premium-border-glow animate-float">
+            
+            <!-- Left Panel: Government Status Logs & Symbols -->
+            <div class="md:col-span-2 bg-gradient-to-br from-blue-950 via-indigo-950 to-slate-950 p-8 text-white flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(180,83,9,0.2),transparent_70%)]"></div>
+                
+                <div class="relative z-10 space-y-6">
+                    <div class="flex items-center gap-3 text-amber-400 border-b border-white/10 pb-4">
+                        <!-- Spinning National Chakra SVG Symbol -->
+                        <svg class="w-12 h-12 text-amber-500 animate-spin-slow" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="50" cy="50" r="45" stroke-dasharray="6,6" />
+                            <circle cx="50" cy="50" r="30" />
+                            <circle cx="50" cy="50" r="5" fill="currentColor" />
+                            <!-- 24 Spoke elements -->
+                            <path d="M 50,5 L 50,95 M 5,50 L 95,50 M 18.3,18.3 L 81.7,81.7 M 18.3,81.7 L 81.7,18.3" />
+                            <path d="M 32.7,11.5 L 67.3,88.5 M 11.5,32.7 L 88.5,67.3 M 11.5,67.3 L 88.5,32.7 M 32.7,88.5 L 67.3,11.5" />
+                        </svg>
+                        <div>
+                            <h3 class="heading-font text-xs font-black tracking-widest uppercase text-slate-400">Union Public Service Commission</h3>
+                            <span class="text-sm font-bold text-amber-400">Security Gate Mirror</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-300 leading-relaxed font-light">Enter registered credentials or initialize dynamic OTR (One Time Registration) nodes.</p>
+                        
+                        <!-- Telemetry Stats Panel Inside Gate -->
+                        <div class="p-4 bg-black/40 rounded-2xl border border-white/5 space-y-2 text-[11px] font-mono">
+                            <div class="flex justify-between"><span class="text-slate-500">Node Status:</span> <span class="text-emerald-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> ESTABLISHED</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Server Latency:</span> <span class="text-cyan-400">0.03ms</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Security Token:</span> <span class="text-amber-500">AES-256-GCM</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Gateway Traffic:</span> <span class="text-slate-300 font-bold">Optimal</span></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-[10px] text-slate-400 pt-2 border-t border-white/5">System Status: Secure Operational Matrix</div>
+
+                <div class="relative z-10 pt-6 border-t border-white/5 text-[11px] text-slate-400 space-y-1.5">
+                    <div class="flex justify-between"><span>System Matrix Time:</span> <span id="live-ist-clock" class="text-amber-400 font-mono">Loading Clock...</span></div>
+                    <div>Local Security Hash: <span class="text-slate-500 font-mono text-[9px]">EV-SHA256-SEC-NODE</span></div>
+                </div>
             </div>
 
-            <div class="md:col-span-3 p-8">
-                <div class="flex border-b border-slate-200 dark:border-slate-700 mb-6 font-bold text-xs">
-                    <button onclick="toggleGatewayView('signin')" id="gate-signin-tab" class="pb-3 px-4 border-b-2 border-blue-900 dark:border-amber-500 text-blue-900 dark:text-amber-400">Login Gate</button>
-                    <button onclick="toggleGatewayView('signup')" id="gate-signup-tab" class="pb-3 px-4 text-slate-400 dark:text-slate-500">New OTR Registration</button>
+            <!-- Right Panel: Interaction Form View -->
+            <div class="md:col-span-3 p-8 relative flex flex-col justify-between min-h-[480px]">
+                <div>
+                    <div class="flex border-b border-slate-200 dark:border-slate-800 mb-6 font-bold text-xs">
+                        <button onclick="toggleGatewayView('signin')" id="gate-signin-tab" class="pb-3 px-4 border-b-2 border-blue-900 dark:border-amber-500 text-blue-900 dark:text-amber-400 transition-all flex items-center gap-2"><i class="fa-solid fa-lock"></i> Account Login</button>
+                        <button onclick="toggleGatewayView('signup')" id="gate-signup-tab" class="pb-3 px-4 text-slate-400 dark:text-slate-500 transition-all flex items-center gap-2"><i class="fa-solid fa-id-card-clip"></i> Create OTR Profile</button>
+                    </div>
+
+                    <!-- SIGN IN PORTAL FORM -->
+                    <div id="gate-signin-form" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">UPSC Registered ID / OTR Email</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-envelope-open-text text-xs"></i></span>
+                                <input type="email" id="signin-email-input" value="ameshwar@examverse.gov.in" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-800 dark:text-white transition-all">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Secure Pin / System Password</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-fingerprint text-xs"></i></span>
+                                <input type="password" id="signin-pass-input" value="123456" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-800 dark:text-white transition-all">
+                            </div>
+                        </div>
+                        <button onclick="executeSecureLoginSequence()" class="w-full bg-blue-900 hover:bg-blue-800 dark:bg-amber-600 dark:hover:bg-amber-700 text-white dark:text-slate-950 font-bold py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-2 transition-all">
+                            <span>Decrypt Credentials & Authenticate</span> <i class="fa-solid fa-key"></i>
+                        </button>
+                    </div>
+
+                    <!-- SIGN UP PORTAL FORM -->
+                    <div id="gate-signup-form" class="hidden space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Candidate Full Legal Name (As in Matriculation Doc)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-user-tie text-xs"></i></span>
+                                <input type="text" id="signup-name-input" placeholder="Ameshwar Dewangan" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-800 dark:text-white transition-all">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Active Contact Matrix Number</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-phone-volume text-xs"></i></span>
+                                <input type="tel" id="signup-phone-input" placeholder="+91 98765 43210" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-800 dark:text-white transition-all">
+                            </div>
+                        </div>
+                        <button onclick="handleGatewayRegisterSubmit()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-2 transition-all">
+                            <span>Register OTR Account</span> <i class="fa-solid fa-user-plus"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div id="gate-signin-form" class="space-y-4">
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase mb-1">OTR ID / Authorized Email</label>
-                        <input type="email" id="gate-email" value="ameshwar@examverse.gov.in" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs focus:outline-none">
+                <!-- Decryption Overlay Animation Inside Form Frame -->
+                <div id="gate-loader-overlay" class="absolute inset-0 bg-white/95 dark:bg-[#0a0f1d]/95 z-50 flex flex-col justify-center items-center gap-4 hidden">
+                    <div class="relative w-20 h-20">
+                        <div class="absolute inset-0 border-4 border-slate-200 dark:border-slate-800 rounded-full"></div>
+                        <div class="absolute inset-0 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-black text-slate-600 dark:text-slate-400 uppercase mb-1">Security Access Key</label>
-                        <input type="password" value="••••••••••••" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs focus:outline-none">
-                    </div>
-                    <button onclick="bypassGatewayAuth('Ameshwar Dewangan')" class="w-full bg-blue-900 dark:bg-amber-600 text-white dark:text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider shadow-md">Authenticate & Initialize</button>
-                </div>
-
-                <div id="gate-signup-form" class="hidden space-y-4">
-                    <div>
-                        <label class="block text-[10px] font-bold mb-1">Full Name</label>
-                        <input type="text" id="gate-newname" placeholder="Ameshwar Dewangan" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs focus:outline-none">
-                    </div>
-                    <button onclick="handleGatewayRegister()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider">Submit OTR Form</button>
+                    <p id="loader-progress-text" class="text-xs font-mono text-slate-500 dark:text-slate-400 animate-pulse">Running Dynamic Decryption Vectors...</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- UNIFIED APPLICATION MATRIX HUB -->
-    <div id="main-application-matrix" class="hidden opacity-0 transition-opacity duration-700 max-w-[1750px] mx-auto grid grid-cols-1 xl:grid-cols-5 gap-6 p-4 md:p-6">
+    <div id="main-application-matrix" class="hidden opacity-0 transition-opacity duration-700 max-w-[1750px] mx-auto grid grid-cols-1 xl:grid-cols-5 gap-6 p-4 md:p-6 relative z-10">
         
         <!-- SIDEBAR CONTROLLER (COMPLETE ECOSYSTEM NAVIGATION) -->
         <aside class="xl:col-span-1 space-y-4 hidden xl:block">
-            <div class="adaptive-glass p-4 rounded-2xl shadow-sm space-y-4 max-h-[85vh] overflow-y-auto">
+            <div class="adaptive-glass p-4 rounded-3xl shadow-lg space-y-4 max-h-[85vh] overflow-y-auto border">
                 <div>
-                    <h4 class="text-[10px] font-black uppercase text-blue-900 dark:text-amber-500 mb-2">🏠 Main Menu</h4>
+                    <h4 class="text-[10px] font-black uppercase text-blue-900 dark:text-amber-500 mb-2 tracking-widest"><i class="fa-solid fa-house-laptop mr-1.5 text-[8px]"></i> Core Modules</h4>
                     <div class="space-y-1 text-xs font-medium">
-                        <button onclick="triggerModuleRouting('home-dash')" class="w-full text-left p-2 rounded-lg bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 font-bold flex items-center"><i class="fa-solid fa-house mr-2.5"></i> Home Dashboard</button>
-                        <button onclick="executeAction('Profile Opened')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-user mr-2.5 text-slate-400"></i> My Profile</button>
-                        <button onclick="executeAction('Notifications Cleared')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between"><span><i class="fa-solid fa-bell mr-2.5 text-slate-400"></i> Notification Center</span><span class="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full">3</span></button>
+                        <button onclick="triggerModuleRouting('home-dash')" class="w-full text-left p-2.5 rounded-xl bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 font-bold flex items-center transition-all shadow-md"><i class="fa-solid fa-house mr-2.5"></i> Home Dashboard</button>
+                        <button onclick="openEcosystemDrawer('My Profile')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-user-graduate mr-2.5 text-slate-400"></i> My Profile</button>
+                        <button onclick="openEcosystemDrawer('Notification Center')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between transition-all"><span><i class="fa-solid fa-bell mr-2.5 text-slate-400"></i> Notification Hub</span><span class="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-bold">3</span></button>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="text-[10px] font-black uppercase text-pink-600 dark:text-pink-400 mb-2">🤖 AI Zone</h4>
+                    <h4 class="text-[10px] font-black uppercase text-pink-600 dark:text-pink-400 mb-2 tracking-widest"><i class="fa-solid fa-robot mr-1.5 text-[8px]"></i> AI Subsystems</h4>
                     <div class="space-y-1 text-xs">
-                        <button onclick="triggerModuleRouting('ai-cognitive')" class="w-full text-left p-2 rounded-lg hover:bg-pink-500/10 flex items-center text-pink-600 dark:text-pink-400 font-bold"><i class="fa-solid fa-atom mr-2.5"></i> AI Tensor Labs</button>
-                        <button onclick="executeAction('AI Chat Assistant')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-comments mr-2.5 text-slate-400"></i> AI Chat Assistant</button>
-                        <button onclick="executeAction('AI Notes Generator')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-file-pen mr-2.5 text-slate-400"></i> AI Notes Generator</button>
-                        <button onclick="executeAction('AI Doubt Solver')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-circle-question mr-2.5 text-slate-400"></i> AI Doubt Solver</button>
-                        <button onclick="executeAction('AI Code Generator')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-code mr-2.5 text-slate-400"></i> AI Code Generator</button>
-                        <button onclick="executeAction('AI Resume Builder')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-address-card mr-2.5 text-slate-400"></i> AI Resume Builder</button>
-                        <button onclick="executeAction('AI Email Writer')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-envelope-open-text mr-2.5 text-slate-400"></i> AI Email Writer</button>
-                        <button onclick="executeAction('AI Translator')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-language mr-2.5 text-slate-400"></i> AI Translator</button>
-                        <button onclick="executeAction('AI OCR Scanner')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-scan mr-2.5 text-slate-400"></i> AI Image Scanner (OCR)</button>
-                        <button onclick="executeAction('AI Image Generator')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-palette mr-2.5 text-slate-400"></i> AI Image Generator</button>
-                        <button onclick="executeAction('AI Voice Assistant')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-microphone mr-2.5 text-slate-400"></i> AI Voice Assistant</button>
+                        <button onclick="triggerModuleRouting('ai-cognitive')" class="w-full text-left p-2.5 rounded-xl hover:bg-pink-500/10 flex items-center text-pink-600 dark:text-pink-400 font-bold transition-all"><i class="fa-solid fa-atom mr-2.5 animate-spin-slow"></i> AI Tensor Labs</button>
+                        <button onclick="openEcosystemDrawer('AI Chat Assistant')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-comments mr-2.5 text-slate-400"></i> AI Chat Assistant</button>
+                        <button onclick="openEcosystemDrawer('AI Notes Generator')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-file-pen mr-2.5 text-slate-400"></i> AI Notes Generator</button>
+                        <button onclick="openEcosystemDrawer('AI Doubt Solver')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-circle-question mr-2.5 text-slate-400"></i> AI Doubt Solver</button>
+                        <button onclick="openEcosystemDrawer('AI Code Generator')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-code mr-2.5 text-slate-400"></i> AI Code Generator</button>
+                        <button onclick="openEcosystemDrawer('AI Resume Builder')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-address-card mr-2.5 text-slate-400"></i> AI Resume Builder</button>
+                        <button onclick="openEcosystemDrawer('AI Email Writer')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-envelope-open-text mr-2.5 text-slate-400"></i> AI Email Writer</button>
+                        <button onclick="openEcosystemDrawer('AI Translator')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-language mr-2.5 text-slate-400"></i> AI Translator</button>
+                        <button onclick="openEcosystemDrawer('AI OCR Scanner')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-scan mr-2.5 text-slate-400"></i> AI Image Scanner (OCR)</button>
+                        <button onclick="openEcosystemDrawer('AI Image Generator')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-palette mr-2.5 text-slate-400"></i> AI Image Generator</button>
+                        <button onclick="openEcosystemDrawer('AI Voice Assistant')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-microphone mr-2.5 text-slate-400"></i> AI Voice Assistant</button>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 mb-2">📚 Education Zone</h4>
+                    <h4 class="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 mb-2 tracking-widest"><i class="fa-solid fa-graduation-cap mr-1.5 text-[8px]"></i> Educational Hubs</h4>
                     <div class="space-y-1 text-xs">
-                        <button onclick="executeAction('Study Hub Modules')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-book-open mr-2.5 text-slate-400"></i> Study Hub</button>
-                        <button onclick="executeAction('Previous Papers Downloaded')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-file-invoice mr-2.5 text-slate-400"></i> Previous Year Papers</button>
-                        <button onclick="executeAction('Notes Library Open')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-folder-open mr-2.5 text-slate-400"></i> Notes Library</button>
-                        <button onclick="executeAction('Streaming Video Courses')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-video mr-2.5 text-slate-400"></i> Video Courses</button>
-                        <button onclick="executeAction('PDF Framework Assets')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-file-pdf mr-2.5 text-slate-400"></i> PDF Library</button>
-                        <button onclick="executeAction('Mock Center')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-pen-to-square mr-2.5 text-slate-400"></i> Mock Test Center</button>
-                        <button onclick="triggerModuleRouting('quiz-arena')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center text-amber-500 font-bold"><i class="fa-solid fa-trophy mr-2.5"></i> Live Quiz Arena</button>
-                        <button onclick="executeAction('Global Leaderboard')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-ranking-star mr-2.5 text-slate-400"></i> Leaderboard</button>
-                        <button onclick="executeAction('Performance Analytics Matrix')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-chart-pie mr-2.5 text-slate-400"></i> Performance Analytics</button>
-                        <button onclick="executeAction('Certificates Module')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-medal mr-2.5 text-slate-400"></i> Certificates</button>
+                        <button onclick="openEcosystemDrawer('Study Hub')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-book-open mr-2.5 text-slate-400"></i> Study Hub</button>
+                        <button onclick="openEcosystemDrawer('Previous Year Papers')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-file-invoice mr-2.5 text-slate-400"></i> Previous Year Papers</button>
+                        <button onclick="openEcosystemDrawer('Notes Library')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-folder-open mr-2.5 text-slate-400"></i> Notes Library</button>
+                        <button onclick="openEcosystemDrawer('Video Courses')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-video mr-2.5 text-slate-400"></i> Video Courses</button>
+                        <button onclick="openEcosystemDrawer('PDF Library')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-file-pdf mr-2.5 text-slate-400"></i> PDF Library</button>
+                        <button onclick="openEcosystemDrawer('Mock Test Center')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-pen-to-square mr-2.5 text-slate-400"></i> Mock Test Center</button>
+                        <button onclick="triggerModuleRouting('quiz-arena')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center text-amber-500 font-bold transition-all"><i class="fa-solid fa-trophy mr-2.5 animate-bounce"></i> Live Quiz Arena</button>
+                        <button onclick="openEcosystemDrawer('Leaderboard')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-ranking-star mr-2.5 text-slate-400"></i> Leaderboard</button>
+                        <button onclick="openEcosystemDrawer('Performance Analytics')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-chart-pie mr-2.5 text-slate-400"></i> Performance Analytics</button>
+                        <button onclick="openEcosystemDrawer('Certificates')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-medal mr-2.5 text-slate-400"></i> Certificates</button>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="text-[10px] font-black uppercase text-blue-600 dark:text-cyan-400 mb-2">💼 Career Zone</h4>
+                    <h4 class="text-[10px] font-black uppercase text-blue-600 dark:text-cyan-400 mb-2 tracking-widest"><i class="fa-solid fa-briefcase mr-1.5 text-[8px]"></i> Career Subsystems</h4>
                     <div class="space-y-1 text-xs">
-                        <button onclick="triggerModuleRouting('career-matrix')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center text-blue-900 dark:text-amber-400 font-bold"><i class="fa-solid fa-briefcase mr-2.5"></i> Govt Job Matrix</button>
-                        <button onclick="executeAction('Job Alerts')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-newspaper mr-2.5 text-slate-400"></i> Latest Job Updates</button>
-                        <button onclick="executeAction('Exam Calendar Matrix')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-calendar-days mr-2.5 text-slate-400"></i> Exam Calendar</button>
-                        <button onclick="executeAction('Scholarships')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-graduation-cap mr-2.5 text-slate-400"></i> Scholarship Finder</button>
-                        <button onclick="executeAction('Internships')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-network-wired mr-2.5 text-slate-400"></i> Internship Finder</button>
-                        <button onclick="executeAction('Roadmaps')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-route mr-2.5 text-slate-400"></i> Career Roadmap</button>
+                        <button onclick="triggerModuleRouting('career-matrix')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center text-blue-900 dark:text-amber-400 font-bold transition-all"><i class="fa-solid fa-briefcase mr-2.5"></i> Govt Job Matrix</button>
+                        <button onclick="openEcosystemDrawer('Latest Job Updates')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-newspaper mr-2.5 text-slate-400"></i> Latest Job Updates</button>
+                        <button onclick="openEcosystemDrawer('Exam Calendar')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-calendar-days mr-2.5 text-slate-400"></i> Exam Calendar</button>
+                        <button onclick="openEcosystemDrawer('Scholarship Finder')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-graduation-cap mr-2.5 text-slate-400"></i> Scholarship Finder</button>
+                        <button onclick="openEcosystemDrawer('Internship Finder')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-network-wired mr-2.5 text-slate-400"></i> Internship Finder</button>
+                        <button onclick="openEcosystemDrawer('Career Roadmap')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-route mr-2.5 text-slate-400"></i> Career Roadmap</button>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="text-[10px] font-black uppercase text-purple-600 dark:text-purple-400 mb-2">🌍 Utility Zone</h4>
+                    <h4 class="text-[10px] font-black uppercase text-purple-600 dark:text-purple-400 mb-2 tracking-widest"><i class="fa-solid fa-earth-asia mr-1.5 text-[8px]"></i> Utility Grid</h4>
                     <div class="space-y-1 text-xs">
-                        <button onclick="triggerModuleRouting('quantum-search')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-search mr-2.5 text-purple-500"></i> Quantum Search</button>
-                        <button onclick="triggerModuleRouting('geospatial-telemetry')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-earth-asia mr-2.5 text-cyan-500"></i> GPS Satellite Map</button>
-                        <button onclick="executeAction('Live Weather Channel')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-cloud-sun mr-2.5 text-slate-400"></i> Weather</button>
-                        <button onclick="executeAction('Engine Calculator')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-calculator mr-2.5 text-slate-400"></i> Calculator</button>
-                        <button onclick="executeAction('System Calendar')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-calendar mr-2.5 text-slate-400"></i> Calendar</button>
-                        <button onclick="executeAction('Reminders Scheduler')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-clock mr-2.5 text-slate-400"></i> Reminder</button>
-                        <button onclick="executeAction('Secure Cloud Vault')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-cloud mr-2.5 text-slate-400"></i> Cloud Storage</button>
+                        <button onclick="triggerModuleRouting('quantum-search')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-search mr-2.5 text-purple-500"></i> Quantum Search</button>
+                        <button onclick="triggerModuleRouting('geospatial-telemetry')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-earth-asia mr-2.5 text-cyan-500"></i> GPS Satellite Map</button>
+                        <button onclick="openEcosystemDrawer('Weather Updates')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-cloud-sun mr-2.5 text-slate-400"></i> Weather</button>
+                        <button onclick="openEcosystemDrawer('Ecosystem Calculator')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-calculator mr-2.5 text-slate-400"></i> Calculator</button>
+                        <button onclick="openEcosystemDrawer('Global Calendar')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-calendar mr-2.5 text-slate-400"></i> Calendar</button>
+                        <button onclick="openEcosystemDrawer('Ecosystem Reminders')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-clock mr-2.5 text-slate-400"></i> Reminder</button>
+                        <button onclick="openEcosystemDrawer('Cloud Secure Vault')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-cloud mr-2.5 text-slate-400"></i> Cloud Storage</button>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="text-[10px] font-black uppercase text-slate-600 dark:text-slate-400 mb-2">🛠️ System Tools</h4>
+                    <h4 class="text-[10px] font-black uppercase text-slate-600 dark:text-slate-400 mb-2 tracking-widest"><i class="fa-solid fa-toolbox mr-1.5 text-[8px]"></i> System Modules</h4>
                     <div class="space-y-1 text-xs">
-                        <button onclick="executeAction('PDF Conversion Matrix')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-file-pdf mr-2.5 text-red-500"></i> PDF Tools</button>
-                        <button onclick="executeAction('QR Scanner Active')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-qrcode mr-2.5 text-slate-400"></i> QR Scanner</button>
-                        <button onclick="executeAction('Doc Lens Active')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-camera mr-2.5 text-slate-400"></i> Document Scanner</button>
-                        <button onclick="executeAction('File Explorer Storage')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-folder mr-2.5 text-slate-400"></i> File Manager</button>
-                        <button onclick="executeAction('AES Password Vault')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-key mr-2.5 text-slate-400"></i> Password Manager</button>
-                        <button onclick="executeAction('System Downloads')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-download mr-2.5 text-slate-400"></i> Downloads</button>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 mb-2">👥 Community Node</h4>
-                    <div class="space-y-1 text-xs">
-                        <button onclick="executeAction('P2P Forums Active')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-comments mr-2.5 text-slate-400"></i> Discussion Forum</button>
-                        <button onclick="executeAction('Mentor Live Support')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-chalkboard-user mr-2.5 text-slate-400"></i> Mentor Support</button>
-                        <button onclick="executeAction('Study Circles Active')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-users-rectangle mr-2.5 text-slate-400"></i> Study Groups</button>
-                        <button onclick="executeAction('Administrative Announcements')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-bullhorn mr-2.5 text-slate-400"></i> Announcements</button>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-[10px] font-black uppercase text-amber-500 mb-2">🎁 Premium Hub</h4>
-                    <div class="space-y-1 text-xs">
-                        <button onclick="executeAction('VIP Membership Active')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center text-amber-600 font-bold"><i class="fa-solid fa-star mr-2.5"></i> Premium Membership</button>
-                        <button onclick="executeAction('VIP Suite Features')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-gem mr-2.5 text-cyan-400"></i> VIP Features</button>
-                        <button onclick="executeAction('Donation Processed')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center text-rose-500"><i class="fa-solid fa-heart mr-2.5"></i> Donate Support</button>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-[10px] font-black uppercase text-slate-500 mb-2">⚙️ Operational Layers</h4>
-                    <div class="space-y-1 text-xs">
-                        <button onclick="toggleEcosystemTheme()" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-circle-half-stroke mr-2.5 text-slate-400"></i> Dark Mode Toggle</button>
-                        <button onclick="executeAction('Language Node Changed')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-globe mr-2.5 text-slate-400"></i> Language Matrix</button>
-                        <button onclick="executeAction('Theme Shifter')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-wand-magic mr-2.5 text-slate-400"></i> Custom Theme</button>
-                        <button onclick="executeAction('App Link Shared')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-share-nodes mr-2.5 text-slate-400"></i> Share App</button>
-                        <button onclick="executeAction('Ecosystem Rated 5 Stars')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-star-half-stroke mr-2.5 text-slate-400"></i> Rate App</button>
-                        <button onclick="executeAction('Support Channel Triggered')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-headset mr-2.5 text-slate-400"></i> Contact Us</button>
-                        <button onclick="executeAction('Help Documentation')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-circle-info mr-2.5 text-slate-400"></i> Help Center</button>
-                        <button onclick="executeAction('Privacy Ledger')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-shield-halved mr-2.5 text-slate-400"></i> Privacy Policy</button>
-                        <button onclick="executeAction('Terms Document')" class="w-full text-left p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center"><i class="fa-solid fa-file-contract mr-2.5 text-slate-400"></i> Terms & Conditions</button>
-                        <button onclick="terminateGatewaySession()" class="w-full text-left p-2 rounded-lg text-red-500 font-bold flex items-center"><i class="fa-solid fa-right-from-bracket mr-2.5"></i> Logout Session</button>
+                        <button onclick="openEcosystemDrawer('PDF Conversion Suite')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-file-pdf mr-2.5 text-red-500"></i> PDF Tools</button>
+                        <button onclick="openEcosystemDrawer('QR Terminal Scanner')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-qrcode mr-2.5 text-slate-400"></i> QR Scanner</button>
+                        <button onclick="openEcosystemDrawer('Optical Document Lens')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-camera mr-2.5 text-slate-400"></i> Document Scanner</button>
+                        <button onclick="openEcosystemDrawer('Dynamic File Manager')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-folder mr-2.5 text-slate-400"></i> File Manager</button>
+                        <button onclick="openEcosystemDrawer('AES Key Locker')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-key mr-2.5 text-slate-400"></i> Password Manager</button>
+                        <button onclick="openEcosystemDrawer('Ecosystem Downloads')" class="w-full text-left p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center transition-all"><i class="fa-solid fa-download mr-2.5 text-slate-400"></i> Downloads</button>
                     </div>
                 </div>
             </div>
@@ -234,111 +341,249 @@
             
             <!-- MODULE 1: HOME PREDICTIVE DASHBOARD CORE -->
             <section id="home-dash" class="router-target-view space-y-6">
-                <div class="bg-gradient-to-r from-blue-900/10 via-transparent to-transparent dark:from-amber-500/10 p-6 rounded-2xl border border-blue-900/20 dark:border-amber-500/20 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
-                        <h2 class="heading-font text-2xl font-black text-blue-900 dark:text-amber-400">AI-Powered Personalized Dashboard</h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Anticipatory Ecosystem Hub • Core Node Architecture Active</p>
+                <!-- Predictive Header Banner -->
+                <div class="bg-gradient-to-r from-blue-900/20 via-transparent to-transparent dark:from-amber-600/15 p-6 rounded-3xl border border-blue-900/20 dark:border-amber-500/20 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-5 dark:opacity-10 text-[180px] font-black select-none pointer-events-none uppercase">UPSC</div>
+                    <div class="relative z-10">
+                        <span class="bg-blue-100 dark:bg-amber-950/40 text-blue-900 dark:text-amber-300 text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider border border-blue-200 dark:border-amber-800">Anticipatory Ecosystem V4</span>
+                        <h2 class="heading-font text-2xl md:text-4xl font-black text-blue-900 dark:text-amber-400 mt-2.5">Dynamic Aspirant Interface</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Real-time analytical grids linking live database indicators and decentralized evaluation tools.</p>
                     </div>
-                    <span class="bg-blue-100 dark:bg-amber-950 text-blue-900 dark:text-amber-400 font-bold px-3 py-1.5 rounded-xl text-xs uppercase tracking-wider shadow-sm border border-blue-200 dark:border-amber-800">Operational Level Alpha</span>
                 </div>
 
-                <!-- Core Anticipatory Overview Grid -->
+                <!-- Ecosystem Functional Overview Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="adaptive-glass p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center space-x-3">
-                        <div class="p-3 bg-blue-500/10 text-blue-600 rounded-lg"><i class="fa-solid fa-bolt-lightning text-xl"></i></div>
-                        <div><p class="text-[11px] uppercase font-black text-slate-400">Doubt Engine</p><p class="text-xs font-bold">Live Doubt Solving Connected</p></div>
+                    <div onclick="openEcosystemDrawer('AI Doubt Solver')" class="adaptive-glass p-5 rounded-2xl shadow-md cursor-pointer transition-all hover:scale-[1.02] border flex items-center space-x-4">
+                        <div class="p-3.5 bg-blue-500/10 text-blue-600 rounded-2xl"><i class="fa-solid fa-bolt-lightning text-xl"></i></div>
+                        <div>
+                            <p class="text-[10px] uppercase font-black text-slate-400 tracking-wider">Live Doubt Solver</p>
+                            <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-0.5">Doubt Resolving Engine Online</p>
+                        </div>
                     </div>
-                    <div class="adaptive-glass p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center space-x-3">
-                        <div class="p-3 bg-emerald-500/10 text-emerald-600 rounded-lg"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
-                        <div><p class="text-[11px] uppercase font-black text-slate-400">Interactive Learning</p><p class="text-xs font-bold">E-Learning & Skill Hub Online</p></div>
+                    <div onclick="openEcosystemDrawer('Study Hub')" class="adaptive-glass p-5 rounded-2xl shadow-md cursor-pointer transition-all hover:scale-[1.02] border flex items-center space-x-4">
+                        <div class="p-3.5 bg-emerald-500/10 text-emerald-600 rounded-2xl"><i class="fa-solid fa-graduation-cap text-xl"></i></div>
+                        <div>
+                            <p class="text-[10px] uppercase font-black text-slate-400 tracking-wider">E-Learning & Skills</p>
+                            <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-0.5">National Study Hub Active</p>
+                        </div>
                     </div>
-                    <div class="adaptive-glass p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center space-x-3">
-                        <div class="p-3 bg-amber-500/10 text-amber-600 rounded-lg"><i class="fa-solid fa-chart-line text-xl"></i></div>
-                        <div><p class="text-[11px] uppercase font-black text-slate-400">Gamified Analytics</p><p class="text-xs font-bold">Performance Vectors Synchronized</p></div>
+                    <div onclick="openEcosystemDrawer('Performance Analytics')" class="adaptive-glass p-5 rounded-2xl shadow-md cursor-pointer transition-all hover:scale-[1.02] border flex items-center space-x-4">
+                        <div class="p-3.5 bg-amber-500/10 text-amber-600 rounded-2xl"><i class="fa-solid fa-chart-line text-xl"></i></div>
+                        <div>
+                            <p class="text-[10px] uppercase font-black text-slate-400 tracking-wider">Gamified Mappings</p>
+                            <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mt-0.5">Aspirant Telemetry Synchronized</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Alerts & Live Discussion Forums Node -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="adaptive-glass p-5 rounded-2xl border">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-900 dark:text-amber-500 flex items-center gap-1.5"><i class="fa-solid fa-bell animate-bounce text-xs"></i> Career Matrix & Calendars</h3>
+                            <button onclick="openEcosystemDrawer('Latest Job Updates')" class="text-[10px] text-blue-900 dark:text-amber-400 font-bold hover:underline">View All Notifications</button>
+                        </div>
+                        <div class="space-y-2.5 text-xs">
+                            <div class="p-3 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                                <div><p class="font-bold">UPSC Civil Services Prelims 2026</p><p class="text-[9px] text-slate-400 mt-0.5 font-mono">Exam Date: May 24, 2026</p></div>
+                                <span class="bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 text-[9px] px-2 py-0.5 rounded-full font-bold">Scheduled</span>
+                            </div>
+                            <div class="p-3 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                                <div><p class="font-bold">CGPSC State Services Main Exam</p><p class="text-[9px] text-slate-400 mt-0.5 font-mono">Status: Registrations Open</p></div>
+                                <span class="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[9px] px-2 py-0.5 rounded-full font-bold">Applications Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- P2P Live Forum Section with Real Message Posting -->
+                    <div class="adaptive-glass p-5 rounded-2xl border">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xs font-black uppercase tracking-wider text-indigo-600 dark:text-purple-400 flex items-center gap-1.5"><i class="fa-solid fa-comments text-xs"></i> Dynamic Discussion Forums</h3>
+                            <button onclick="openEcosystemDrawer('Discussion Forum')" class="text-[10px] text-indigo-600 dark:text-purple-400 font-bold hover:underline">Launch Lobby</button>
+                        </div>
+                        
+                        <div id="p2p-live-lobby" class="space-y-2 max-h-36 overflow-y-auto pr-1 mb-3 text-xs">
+                            <div class="p-2.5 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <span class="font-bold text-[10px] text-blue-900 dark:text-amber-400">Amitesh_Sinha:</span>
+                                <span class="text-slate-600 dark:text-slate-300">Has anyone read the latest economic survey for UPSC? Is fiscal framework 4.0 critical?</span>
+                            </div>
+                            <div class="p-2.5 bg-slate-100/50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                                <span class="font-bold text-[10px] text-blue-900 dark:text-amber-400">Rajesh_Kumar:</span>
+                                <span class="text-slate-600 dark:text-slate-300">Yes, the agricultural productivity models are super important for GS Paper 3.</span>
+                            </div>
+                        </div>
+
+                        <!-- Mini quick message submit -->
+                        <div class="flex gap-2">
+                            <input type="text" id="p2p-quick-input" placeholder="Post rapid query into exam lobby..." class="flex-1 px-3 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs focus:outline-none">
+                            <button onclick="postQuickP2PMessage()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all"><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- MODULE 2: AI TENSOR LABS COGNITIVE LAYER -->
             <section id="ai-cognitive" class="router-target-view hidden space-y-6">
-                <div class="bg-gradient-to-r from-pink-500/10 via-transparent to-transparent p-6 rounded-2xl border border-pink-500/20 shadow-sm">
+                <div class="bg-gradient-to-r from-pink-500/15 via-transparent to-transparent p-6 rounded-3xl border border-pink-500/20 shadow-sm relative overflow-hidden">
                     <h2 class="heading-font text-2xl font-black text-pink-600 dark:text-pink-400">AI Universe & Visual Tensor Engine</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Generative calculation pipelines for advanced question rendering templates.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Generative cognitive pipelines designed to synthetically map analytical blueprints and custom tests.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="adaptive-glass p-5 rounded-2xl border"><h3 class="text-xs font-black uppercase text-pink-600 mb-2">Question Synthesizer</h3><button onclick="executeAction('AI Question Synthesis Compiled')" class="w-full bg-pink-500 text-white font-bold py-2 rounded-xl text-xs">Run Generation</button></div>
-                    <div class="adaptive-glass p-5 rounded-2xl border"><h3 class="text-xs font-black uppercase text-cyan-600 mb-2">Visual Tensor Layer</h3><button onclick="executeAction('AI Visual Layer Processed')" class="w-full bg-cyan-600 text-white font-bold py-2 rounded-xl text-xs">Activate Graphics Matrix</button></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="adaptive-glass p-6 rounded-3xl border relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-pink-500 to-purple-500"></div>
+                        <div>
+                            <h3 class="text-sm font-black uppercase text-pink-600 dark:text-pink-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-atom"></i> AI Universe Question Synthesizer</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Drafts high-level comprehensive validation schemas matching UPSC and State PSC syllabus criteria automatically.</p>
+                        </div>
+                        <button onclick="triggerPlaceholderAI('Question Synthesizer')" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 border border-pink-500/30 text-pink-600 dark:text-pink-400 font-bold py-2.5 rounded-xl text-xs transition-all">Execute AI Pipeline</button>
+                    </div>
+                    
+                    <div class="adaptive-glass p-6 rounded-3xl border relative overflow-hidden flex flex-col justify-between">
+                        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
+                        <div>
+                            <h3 class="text-sm font-black uppercase text-cyan-600 dark:text-cyan-400 mb-2 flex items-center gap-1.5"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Visual Tensor Hub</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Converts raw administrative syllabus coordinates into interactive mental flow maps dynamically.</p>
+                        </div>
+                        <button onclick="triggerPlaceholderAI('Visual Tensor')" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 font-bold py-2.5 rounded-xl text-xs transition-all">Activate Tensor Node</button>
+                    </div>
                 </div>
             </section>
 
-            <!-- MODULE 3: GAMIFIED LIVE QUIZ ARENA -->
+            <!-- MODULE 3: LIVE MULTI-CATEGORY QUIZ ARENA -->
             <section id="quiz-arena" class="router-target-view hidden space-y-6">
-                <div class="bg-gradient-to-r from-amber-500/10 via-transparent to-transparent p-6 rounded-2xl border border-amber-500/20 shadow-sm">
+                <div class="bg-gradient-to-r from-amber-500/10 via-transparent to-transparent p-6 rounded-3xl border border-amber-500/20 shadow-sm">
                     <h2 class="heading-font text-2xl font-black text-amber-600 dark:text-amber-400">Interactive Game Quiz Terminal</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Real-time testing matrix across specialized domain indexes.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Complete diagnostic testing matrix covering standard logical and cognitive categories.</p>
                 </div>
+
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                    <button onclick="initializeQuizModule('hacks')" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-xs font-bold shadow-sm"><i class="fa-solid fa-lightbulb text-amber-500 mb-1"></i><p>Life Hacks</p></button>
-                    <button onclick="initializeQuizModule('reasoning')" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-xs font-bold shadow-sm"><i class="fa-solid fa-puzzle-piece text-blue-500 mb-1"></i><p>Reasoning</p></button>
-                    <button onclick="initializeQuizModule('maths')" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-xs font-bold shadow-sm"><i class="fa-solid fa-calculator text-purple-500 mb-1"></i><p>Mathematics</p></button>
-                    <button onclick="initializeQuizModule('english')" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-xs font-bold shadow-sm"><i class="fa-solid fa-language text-pink-500 mb-1"></i><p>English</p></button>
-                    <button onclick="initializeQuizModule('gk')" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-center text-xs font-bold shadow-sm"><i class="fa-solid fa-earth-americas text-emerald-500 mb-1"></i><p>GK Matrix</p></button>
+                    <button onclick="initializeQuizModule('hacks')" class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-amber-500 transition-all text-center shadow-md"><i class="fa-solid fa-lightbulb text-xl text-amber-500 mb-1 animate-bounce"></i><p class="text-[11px] font-black">Life Hacks</p></button>
+                    <button onclick="initializeQuizModule('reasoning')" class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-blue-500 transition-all text-center shadow-md"><i class="fa-solid fa-puzzle-piece text-xl text-blue-500 mb-1"></i><p class="text-[11px] font-black">Reasoning</p></button>
+                    <button onclick="initializeQuizModule('maths')" class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-purple-500 transition-all text-center shadow-md"><i class="fa-solid fa-calculator text-xl text-purple-500 mb-1"></i><p class="text-[11px] font-black">Mathematics</p></button>
+                    <button onclick="initializeQuizModule('english')" class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-pink-500 transition-all text-center shadow-md"><i class="fa-solid fa-language text-xl text-pink-500 mb-1"></i><p class="text-[11px] font-black">English Core</p></button>
+                    <button onclick="initializeQuizModule('gk')" class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-emerald-500 transition-all text-center shadow-md"><i class="fa-solid fa-earth-americas text-xl text-emerald-500 mb-1"></i><p class="text-[11px] font-black">GK Matrix</p></button>
                 </div>
-                <div id="active-quiz-terminal" class="adaptive-glass p-5 rounded-2xl hidden border max-w-xl mx-auto">
-                    <h4 id="quiz-question-node" class="text-xs font-extrabold mb-3">Loading Question...</h4>
+
+                <!-- Active Game Terminal Node -->
+                <div id="active-quiz-terminal" class="adaptive-glass p-6 rounded-3xl max-w-xl mx-auto hidden border relative overflow-hidden">
+                    <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+                        <span id="quiz-badge-category" class="text-[10px] font-black uppercase tracking-wider bg-blue-900 dark:bg-amber-600 text-white dark:text-slate-950 px-2.5 py-1 rounded-md">Category</span>
+                        <span class="text-xs font-mono">Score Data: <b id="quiz-score-node" class="text-amber-600 dark:text-amber-400">0</b> XP</span>
+                    </div>
+                    <h3 id="quiz-question-node" class="text-sm font-extrabold mb-4 text-slate-800 dark:text-white">Active question asset calculations initializing...</h3>
                     <div id="quiz-options-box" class="space-y-2 text-xs"></div>
                 </div>
             </section>
 
             <!-- MODULE 4: CAREER GOVT JOB MATRIX -->
             <section id="career-matrix" class="router-target-view hidden space-y-6">
-                <div class="bg-gradient-to-r from-blue-900/10 via-transparent to-transparent p-6 rounded-2xl border border-blue-900/20 shadow-sm">
-                    <h2 class="heading-font text-2xl font-black text-blue-900 dark:text-amber-400">Centralized Recruitment Matrix</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Direct official application pipelines for national registries.</p>
+                <div class="bg-gradient-to-r from-blue-900/10 via-transparent to-transparent dark:from-amber-600/10 p-6 rounded-3xl border border-blue-900/20 dark:border-amber-500/20 shadow-sm">
+                    <h2 class="heading-font text-2xl font-black text-blue-900 dark:text-amber-400">Centralized Commissions Gate</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Connecting official recruitment platforms and form routing paths instantly.</p>
                 </div>
-                <div class="p-4 bg-white dark:bg-slate-900 rounded-xl flex justify-between items-center border border-slate-200 dark:border-slate-800 shadow-sm text-xs">
-                    <div><p class="font-bold">UPSC Administrative Portal</p><p class="text-[10px] text-slate-400">Dynamic Gateway Active</p></div>
-                    <button onclick="window.open('https://upsconline.nic.in', '_blank')" class="bg-blue-900 dark:bg-amber-600 text-white dark:text-slate-950 px-3 py-1.5 rounded-lg text-[10px] font-bold">Open Portal</button>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="adaptive-glass p-5 rounded-2xl border flex justify-between items-center shadow-md">
+                        <div>
+                            <p class="font-extrabold text-xs">UPSC Application Gate</p>
+                            <p class="text-[10px] text-slate-400">Union Public Service Commission</p>
+                        </div>
+                        <button onclick="window.open('https://upsconline.nic.in', '_blank')" class="bg-blue-900 dark:bg-amber-600 text-white dark:text-slate-950 px-4 py-2 rounded-xl text-[10px] font-bold shadow-sm flex items-center gap-1.5 transition-all"><span>Open Portal</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                    </div>
+                    <div class="adaptive-glass p-5 rounded-2xl border flex justify-between items-center shadow-md">
+                        <div>
+                            <p class="font-extrabold text-xs">CGPSC Application Gate</p>
+                            <p class="text-[10px] text-slate-400">Chhattisgarh Public Service Commission</p>
+                        </div>
+                        <button onclick="window.open('https://psc.cg.gov.in', '_blank')" class="bg-blue-900 dark:bg-amber-600 text-white dark:text-slate-950 px-4 py-2 rounded-xl text-[10px] font-bold shadow-sm flex items-center gap-1.5 transition-all"><span>Open Portal</span> <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                    </div>
                 </div>
             </section>
 
             <!-- MODULE 5: GEOSPATIAL & POPULATION TELEMETRY -->
             <section id="geospatial-telemetry" class="router-target-view hidden space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="adaptive-glass p-4 rounded-xl border"><p class="text-[10px] font-black text-slate-400">INDIA LIVE POPULATION</p><h3 id="india-pop-clock" class="text-2xl font-black text-blue-900 dark:text-white">1,462,891,412</h3></div>
-                    <div class="adaptive-glass p-4 rounded-xl border"><p class="text-[10px] font-black text-slate-400">WORLD LIVE POPULATION</p><h3 id="world-pop-clock" class="text-2xl font-black text-amber-500 dark:text-white">8,294,115,849</h3></div>
+                    <div class="adaptive-glass p-5 rounded-2xl border flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-chart-line mr-1 text-blue-500"></i> India Live Population</p>
+                            <h3 id="india-pop-clock" class="text-2xl font-black text-blue-900 dark:text-white mt-1">1,462,891,412</h3>
+                        </div>
+                        <span class="bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 text-[9px] px-2 py-1 rounded-lg font-mono font-bold animate-pulse">+1.28/s</span>
+                    </div>
+                    <div class="adaptive-glass p-5 rounded-2xl border flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-earth-americas mr-1 text-amber-500"></i> World Live Population</p>
+                            <h3 id="world-pop-clock" class="text-2xl font-black text-amber-500 dark:text-white mt-1">8,294,115,849</h3>
+                        </div>
+                        <span class="bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-300 text-[9px] px-2 py-1 rounded-lg font-mono font-bold animate-pulse">+2.41/s</span>
+                    </div>
                 </div>
-                <div class="w-full h-80 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner">
-                    <iframe class="w-full h-full opacity-80" src="https://maps.google.com/maps?q=India&t=k&z=5&output=embed" allowfullscreen loading="lazy"></iframe>
+                <!-- Real Google satellite Map Integration -->
+                <div class="w-full h-96 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-inner relative">
+                    <iframe class="w-full h-full border-none opacity-90 transition-opacity" src="https://maps.google.com/maps?q=India&t=k&z=5&output=embed" allowfullscreen loading="lazy"></iframe>
                 </div>
             </section>
 
             <!-- MODULE 6: QUANTUM INTERNAL SEARCH -->
             <section id="quantum-search" class="router-target-view hidden space-y-4">
-                <div class="max-w-xl mx-auto space-y-4 py-4">
-                    <div class="flex bg-white dark:bg-slate-900 rounded-xl border border-slate-300 dark:border-slate-700 p-1 shadow-sm">
-                        <input type="text" id="internal-search-input" placeholder="Search system nodes, reasoning layouts, job updates..." class="w-full bg-transparent px-3 text-xs focus:outline-none">
-                        <button onclick="executeQuantumSearch()" class="bg-blue-900 dark:bg-amber-600 text-white dark:text-slate-950 font-bold text-xs px-4 py-2 rounded-lg">Search</button>
+                <div class="max-w-xl mx-auto space-y-4 py-6 text-center">
+                    <div class="inline-block p-4 bg-blue-500/10 text-blue-600 rounded-full border border-blue-500/20 text-2xl mb-2"><i class="fa-solid fa-magnifying-glass-nodes animate-pulse"></i></div>
+                    <h2 class="heading-font text-xl font-extrabold">Ecosystem Search Matrix</h2>
+                    <p class="text-xs text-slate-400">Search system indices, mock archives, and government commission data frameworks instantly.</p>
+                    
+                    <div class="flex bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 p-1.5 focus-within:ring-2 focus-within:ring-amber-500 transition-all shadow-md">
+                        <input type="text" id="internal-search-input" placeholder="Search syllabus codes, sample papers, reasoning guidelines..." class="w-full bg-transparent px-3 text-xs text-slate-800 dark:text-white focus:outline-none">
+                        <button onclick="executeQuantumSearch()" class="bg-blue-900 hover:bg-blue-800 dark:bg-amber-600 dark:hover:bg-amber-700 text-white dark:text-slate-950 font-bold text-xs px-5 py-2.5 rounded-xl transition-all">Search Index</button>
                     </div>
-                    <div id="search-results-terminal" class="space-y-2 max-h-40 overflow-y-auto hidden"></div>
+                    <div id="search-results-terminal" class="space-y-2 max-h-60 overflow-y-auto hidden text-left mt-4"></div>
                 </div>
             </section>
 
         </main>
     </div>
 
-    <!-- MOBILITY HARDWARE BOTTOM NAVIGATION SYSTEM (5 TABS) -->
-    <nav class="xl:hidden fixed bottom-0 left-0 w-full bg-white dark:bg-[#0f172a] border-t border-slate-200 dark:border-slate-800 px-4 py-2 flex justify-around items-center shadow-xl z-50 transition-colors">
-        <button onclick="triggerModuleRouting('home-dash')" class="flex flex-col items-center text-blue-900 dark:text-amber-500"><i class="fa-solid fa-house text-lg"></i><span class="text-[9px] font-bold mt-0.5">Home</span></button>
-        <button onclick="triggerModuleRouting('ai-cognitive')" class="flex flex-col items-center text-slate-400 hover:text-pink-500"><i class="fa-solid fa-atom text-lg"></i><span class="text-[9px] font-bold mt-0.5">AI</span></button>
-        <button onclick="triggerModuleRouting('quiz-arena')" class="flex flex-col items-center text-slate-400 hover:text-amber-500"><i class="fa-solid fa-trophy text-lg"></i><span class="text-[9px] font-bold mt-0.5">Quiz</span></button>
-        <button onclick="triggerModuleRouting('quantum-search')" class="flex flex-col items-center text-slate-400 hover:text-purple-500"><i class="fa-solid fa-search text-lg"></i><span class="text-[9px] font-bold mt-0.5">Search</span></button>
-        <button onclick="executeAction('Profile Account Triggered')" class="flex flex-col items-center text-slate-400 hover:text-blue-500"><i class="fa-solid fa-user text-lg"></i><span class="text-[9px] font-bold mt-0.5">Profile</span></button>
+    <!-- MOBILITY BOTTOM NAVIGATION SYSTEM (FOR RESPONSIVE TOUCH PHONES) -->
+    <nav class="xl:hidden fixed bottom-0 left-0 w-full bg-white dark:bg-[#0a0f1d] border-t border-slate-200 dark:border-slate-800 px-4 py-2 flex justify-around items-center shadow-2xl z-50 transition-colors">
+        <button onclick="triggerModuleRouting('home-dash')" class="flex flex-col items-center text-blue-900 dark:text-amber-500 p-2"><i class="fa-solid fa-house text-lg"></i><span class="text-[9px] font-bold mt-0.5">Home</span></button>
+        <button onclick="triggerModuleRouting('ai-cognitive')" class="flex flex-col items-center text-slate-400 hover:text-pink-500 p-2"><i class="fa-solid fa-atom text-lg"></i><span class="text-[9px] font-bold mt-0.5">AI</span></button>
+        <button onclick="triggerModuleRouting('quiz-arena')" class="flex flex-col items-center text-slate-400 hover:text-amber-500 p-2"><i class="fa-solid fa-trophy text-lg"></i><span class="text-[9px] font-bold mt-0.5">Quiz</span></button>
+        <button onclick="triggerModuleRouting('quantum-search')" class="flex flex-col items-center text-slate-400 hover:text-purple-500 p-2"><i class="fa-solid fa-search text-lg"></i><span class="text-[9px] font-bold mt-0.5">Search</span></button>
+        <button onclick="openEcosystemDrawer('My Profile')" class="flex flex-col items-center text-slate-400 hover:text-blue-500 p-2"><i class="fa-solid fa-user-tie text-lg"></i><span class="text-[9px] font-bold mt-0.5">Profile</span></button>
     </nav>
 
-    <!-- PIPELINE CORE CONTROL SCRIPTS -->
+    <!-- SLIDE-OVER PREMIUM DRAWER (DYNAMICS DRAWER FOR ALL SUB-FEATURES) -->
+    <div id="ecosystem-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[480px] bg-white dark:bg-[#0b0f19] shadow-2xl border-l border-slate-200 dark:border-slate-800 transform translate-x-full transition-transform duration-500 flex flex-col hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-circle-nodes text-amber-500 animate-pulse text-sm"></i>
+                <h3 id="drawer-title" class="heading-font text-sm font-black uppercase tracking-wider text-slate-800 dark:text-white">Drawer Core Terminal</h3>
+            </div>
+            <button onclick="closeEcosystemDrawer()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-all p-1.5 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-800"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6 space-y-4" id="drawer-dynamic-content">
+            <!-- Dynamic interactive components loaded here via JS -->
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER (Replacement of alert) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 space-y-2 pointer-events-none max-w-sm w-full z-[100]"></div>
+
+    <!-- CUSTOM CONFIRMATION MODAL OVERLAY (Replacement of confirm) -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex justify-center items-center p-4 hidden">
+        <div class="bg-white dark:bg-[#0a0f1d] border border-slate-200 dark:border-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl transform scale-95 transition-transform duration-300" id="confirm-card">
+            <h4 id="confirm-title" class="font-bold text-sm text-slate-900 dark:text-white heading-font">Security confirmation required</h4>
+            <p id="confirm-message" class="text-xs text-slate-500 mt-2 leading-relaxed">Are you sure you want to perform this administrative task?</p>
+            <div class="flex justify-end gap-2.5 mt-5 text-xs font-bold">
+                <button onclick="closeConfirmModal(false)" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-700 dark:text-slate-300">Cancel</button>
+                <button id="confirm-yes-btn" class="px-4 py-2 bg-amber-600 text-white rounded-xl hover:bg-amber-700 transition-all shadow-md">Confirm Action</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE SYSTEM SCRIPT LAYERS -->
     <script>
-        // Adaptive System Theme Architecture
+        // System Theme Management Framework
         function toggleEcosystemTheme() {
             const documentHtml = document.documentElement;
             const themeIcon = document.getElementById("theme-icon");
@@ -349,29 +594,89 @@
                 themeIcon.className = "fa-solid fa-moon";
                 themeText.innerText = "Dark Mode Off";
                 localStorage.setItem('examverse-master-theme', 'light');
+                showToastNotification("Switched to Light Administrative Interface", "info");
             } else {
                 documentHtml.classList.add('dark');
                 themeIcon.className = "fa-solid fa-sun";
                 themeText.innerText = "Dark Mode On";
                 localStorage.setItem('examverse-master-theme', 'dark');
+                showToastNotification("Switched to Deep Obsidian-Gold Interface", "success");
             }
         }
 
         // Initialize Theme Preference on Document Ready
-        if (localStorage.getItem('examverse-master-theme') === 'dark') {
+        if (localStorage.getItem('examverse-master-theme') === 'dark' || (!('examverse-master-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
-            document.getElementById("theme-icon").className = "fa-solid fa-sun";
-            document.getElementById("theme-text").innerText = "Dark Mode On";
+            const themeIcon = document.getElementById("theme-icon");
+            const themeText = document.getElementById("theme-text");
+            if(themeIcon) themeIcon.className = "fa-solid fa-sun";
+            if(themeText) themeText.innerText = "Dark Mode On";
         }
 
-        // Routing Engine Logic
-        function triggerModuleRouting(targetId) {
-            document.querySelectorAll('.router-target-view').forEach(view => view.classList.add('hidden'));
-            const targetView = document.getElementById(targetId);
-            if (targetView) targetView.classList.remove('hidden');
+        // --- CUSTOM TOAST NOTIFICATION UTILITIES ---
+        function showToastNotification(message, type = "info") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "p-4 rounded-2xl border text-xs font-bold shadow-xl transition-all duration-300 transform translate-y-3 opacity-0 bg-white/95 dark:bg-[#0b0f19]/95 pointer-events-auto flex items-center gap-2.5 " + 
+                (type === 'success' ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 animate-pulse' : 
+                 type === 'error' ? 'border-red-500 text-red-600 dark:text-red-400' : 'border-amber-500 text-amber-600 dark:text-amber-400');
+            
+            const iconHTML = type === 'success' ? '<i class="fa-solid fa-circle-check text-lg"></i>' : 
+                             type === 'error' ? '<i class="fa-solid fa-triangle-exclamation text-lg"></i>' : 
+                             '<i class="fa-solid fa-circle-info text-lg"></i>';
+            
+            toast.innerHTML = `${iconHTML} <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-3', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-3');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
         }
 
-        // UPSC Authentic View Switches
+        // --- CUSTOM DIALOG / MODAL UTILITIES ---
+        let confirmActionCallback = null;
+        function showConfirmModal(title, message, callback) {
+            document.getElementById("confirm-title").innerText = title;
+            document.getElementById("confirm-message").innerText = message;
+            confirmActionCallback = callback;
+            
+            const modal = document.getElementById("confirm-modal");
+            const card = document.getElementById("confirm-card");
+            modal.classList.remove("hidden");
+            setTimeout(() => card.classList.remove("scale-95"), 50);
+        }
+
+        function closeConfirmModal(result) {
+            const modal = document.getElementById("confirm-modal");
+            const card = document.getElementById("confirm-card");
+            card.classList.add("scale-95");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+                if (result && confirmActionCallback) {
+                    confirmActionCallback();
+                }
+                confirmActionCallback = null;
+            }, 150);
+        }
+
+        document.getElementById("confirm-yes-btn").onclick = () => closeConfirmModal(true);
+
+        // --- LIVE IST CLOCK SERVICE ---
+        function updateISTClock() {
+            const clockNode = document.getElementById("live-ist-clock");
+            if (!clockNode) return;
+            const now = new Date();
+            clockNode.innerText = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour12: true }) + " IST";
+        }
+        setInterval(updateISTClock, 1000);
+        updateISTClock();
+
+        // --- AUTH GATEWAY VIEWS ---
         function toggleGatewayView(target) {
             const siTab = document.getElementById("gate-signin-tab");
             const suTab = document.getElementById("gate-signup-tab");
@@ -381,108 +686,409 @@
             if (target === 'signin') {
                 siForm.classList.remove("hidden");
                 suForm.classList.add("hidden");
-                siTab.className = "pb-3 px-4 border-b-2 border-blue-900 dark:border-amber-500 text-blue-900 dark:text-amber-400 font-bold";
-                suTab.className = "pb-3 px-4 text-slate-400 dark:text-slate-500 font-bold";
+                siTab.className = "pb-3 px-4 border-b-2 border-blue-900 dark:border-amber-500 text-blue-900 dark:text-amber-400 font-bold transition-all flex items-center gap-2";
+                suTab.className = "pb-3 px-4 text-slate-400 dark:text-slate-500 transition-all flex items-center gap-2";
             } else {
                 suForm.classList.remove("hidden");
                 siForm.classList.add("hidden");
-                suTab.className = "pb-3 px-4 border-b-2 border-blue-900 dark:border-amber-500 text-blue-900 dark:text-amber-400 font-bold";
-                siTab.className = "pb-3 px-4 text-slate-400 dark:text-slate-500 font-bold";
+                suTab.className = "pb-3 px-4 border-b-2 border-blue-900 dark:border-amber-500 text-blue-900 dark:text-amber-400 font-bold transition-all flex items-center gap-2";
+                siTab.className = "pb-3 px-4 text-slate-400 dark:text-slate-500 transition-all flex items-center gap-2";
             }
         }
 
-        // Secure Authentication Flow Bypass
-        function bypassGatewayAuth(identity) {
-            document.getElementById("identity-badge-label").innerText = identity;
-            document.getElementById("splash-gateway").classList.add("hidden");
-            document.querySelectorAll('.id-badge-node').forEach(node => node.classList.remove('hidden'));
+        function executeSecureLoginSequence() {
+            const overlay = document.getElementById("gate-loader-overlay");
+            const progressText = document.getElementById("loader-progress-text");
+            overlay.classList.remove("hidden");
             
+            const steps = [
+                "Establishing secure handshakes with UPSC Node...",
+                "Running biometric validation protocols...",
+                "Decrypting candidates structural matrices...",
+                "Mapping user identity token parameters..."
+            ];
+            
+            let currentStep = 0;
+            const stepInterval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    progressText.innerText = steps[currentStep];
+                    currentStep++;
+                } else {
+                    clearInterval(stepInterval);
+                    overlay.classList.add("hidden");
+                    bypassGatewayAuth("Ameshwar Dewangan");
+                }
+            }, 550);
+        }
+
+        function handleGatewayRegisterSubmit() {
+            const nameInput = document.getElementById("signup-name-input").value.trim();
+            if(!nameInput) {
+                showToastNotification("⚠️ OTR Full Legal Name cannot remain empty.", "error");
+                return;
+            }
+            showToastNotification("OTR Registration Successful!", "success");
+            bypassGatewayAuth(nameInput);
+        }
+
+        function bypassGatewayAuth(resolvedIdentity) {
+            document.getElementById("identity-badge-label").innerText = resolvedIdentity;
+            document.getElementById("splash-gateway").classList.add("hidden");
+            
+            document.querySelectorAll('.id-badge-node').forEach(n => n.classList.remove('hidden'));
             const mainApp = document.getElementById("main-application-matrix");
             mainApp.classList.remove("hidden");
             setTimeout(() => mainApp.classList.add("opacity-100"), 50);
+            showToastNotification(`Welcome to Unified Command Matrix, ${resolvedIdentity}!`, "success");
         }
 
-        function handleGatewayRegister() {
-            const name = document.getElementById("gate-newname").value || "Registered User";
-            bypassGatewayAuth(name);
-        }
-
-        // Action Trigger Alerts For Sub-Features
-        function executeAction(messageString) {
-            alert(`⚡ [ExamVerse-AI System Notice]: '${messageString}' initialized successfully. Central Firebase sync integration ready for next step deployment!`);
-        }
-
-        // Quiz Module Engine
-        const mockQuestions = {
-            hacks: { q: "Which daily paradigm maximizes academic data absorption?", o: ["8h Continuous Loop", "Pomodoro Interval Method", "Verbal Rote Recitation"], a: 1 },
-            reasoning: { q: "Solve logical matrix correlation parameter values: C=6, E=10, G=?", o: ["14", "12", "16"], a: 0 },
-            maths: { q: "Identify prime sequence product formula verification values for 7^3:", o: ["343", "243", "49"], a: 0 },
-            english: { q: "Locate correct vocabulary layout blueprint syntax alignment:", o: ["Accomodation", "Accommodation", "Acomodation"], a: 1 },
-            gk: { q: "Which core railway infrastructure boundary governs structural nodes in Bilaspur?", o: ["SEC Railway Zone", "Western Metro Grid", "Northern Network"], a: 0 }
-        };
-
-        function initializeQuizModule(category) {
-            const displayNode = document.getElementById("active-quiz-terminal");
-            displayNode.classList.remove("hidden");
-            const data = mockQuestions[category];
-            document.getElementById("quiz-question-node").innerText = data.q;
-            
-            const box = document.getElementById("quiz-options-box");
-            box.innerHTML = "";
-            data.o.forEach((opt, idx) => {
-                const btn = document.createElement("button");
-                btn.className = "w-full text-left p-2.5 bg-slate-50 dark:bg-slate-950 border rounded-xl flex justify-between";
-                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle"></i>`;
-                btn.onclick = () => {
-                    if (idx === data.a) {
-                        btn.className = "w-full text-left p-2.5 bg-emerald-500/10 border border-emerald-500 rounded-xl text-emerald-600 font-bold";
-                    } else {
-                        btn.className = "w-full text-left p-2.5 bg-rose-500/10 border border-rose-500 rounded-xl text-rose-600 font-bold";
-                    }
-                };
-                box.appendChild(btn);
+        function terminateGatewaySession() {
+            showConfirmModal("Logout Session", "Are you sure you want to exit the secure administrative ecosystem?", () => {
+                location.reload();
             });
         }
 
-        // Population Clock Simulation Engine
-        setInterval(() => {
-            const ind = document.getElementById("india-pop-clock");
-            const wrl = document.getElementById("world-pop-clock");
-            if (ind && wrl) {
-                let iVal = parseInt(ind.innerText.replace(/,/g, ''));
-                let wVal = parseInt(wrl.innerText.replace(/,/g, ''));
-                ind.innerText = (iVal + Math.floor(Math.random() * 2) + 1).toLocaleString('en-IN');
-                wrl.innerText = (wVal + Math.floor(Math.random() * 3) + 1).toLocaleString('en-US');
-            }
-        }, 900);
+        // --- ROUTING MATRIX ENGINE ---
+        function triggerModuleRouting(targetId, buttonNode) {
+            document.querySelectorAll('.router-target-view').forEach(view => view.classList.add('hidden'));
+            const targetView = document.getElementById(targetId);
+            if (targetView) targetView.classList.remove('hidden');
 
-        // Quantum Internal Search Algorithm
-        function executeQuantumSearch() {
-            const val = document.getElementById("internal-search-input").value.toLowerCase();
-            const term = document.getElementById("search-results-terminal");
-            term.classList.remove("hidden");
-            term.innerHTML = "";
-
-            const indexPool = [
-                { t: "UPSC Official Examination Syllabus Matrix Architecture Blueprint", u: "https://upsconline.nic.in" },
-                { t: "Gamified Reasoning Learning Data Analysis Analytics Module", u: "#" },
-                { t: "AI Resume Builder & Mock Interview Simulation Protocols", u: "#" }
-            ];
-
-            const match = indexPool.filter(i => i.t.toLowerCase().includes(val));
-            if (match.length > 0) {
-                match.forEach(r => {
-                    const row = document.createElement("div");
-                    row.className = "p-2 bg-slate-50 dark:bg-slate-950 border rounded-xl text-xs flex justify-between items-center";
-                    row.innerHTML = `<span>${r.t}</span> <a href="${r.u}" target="_blank" class="text-blue-500 text-[10px] underline">Open Asset</a>`;
-                    term.appendChild(row);
-                });
-            } else {
-                term.innerHTML = `<p class="text-[11px] text-slate-400 text-center">No precise records found.</p>`;
+            document.querySelectorAll('.router-btn').forEach(btn => {
+                btn.className = "router-btn w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-white/5 transition-all text-slate-700 dark:text-slate-300";
+            });
+            if (buttonNode) {
+                buttonNode.className = "router-btn w-full flex items-center justify-between p-3.5 rounded-xl bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 shadow-md transition-all";
             }
         }
 
-        function terminateGatewaySession() { if(confirm("🔒 Lock structural ecosystem console layer?")) { location.reload(); } }
+        // --- SUB-FEATURES ECOSYSTEM DRAWER CONTROLLER ---
+        function openEcosystemDrawer(moduleName) {
+            const drawer = document.getElementById("ecosystem-drawer");
+            const titleNode = document.getElementById("drawer-title");
+            const contentNode = document.getElementById("drawer-dynamic-content");
+
+            titleNode.innerText = moduleName;
+            drawer.classList.remove("hidden");
+            setTimeout(() => drawer.classList.remove("translate-x-full"), 50);
+
+            // Generate customized interfaces according to user action targets
+            let interfaceHTML = "";
+            if(moduleName.includes("Profile")) {
+                interfaceHTML = `
+                    <div class="space-y-4 text-xs font-mono">
+                        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+                            <p class="text-slate-400">OTR IDENTITY SPECIFICATION</p>
+                            <p class="text-sm font-extrabold mt-1 text-slate-800 dark:text-white">Ameshwar Dewangan</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+                            <p class="text-slate-400">AUTHENTICATED CREDENTIAL TOKEN</p>
+                            <p class="text-sm font-extrabold mt-1 text-emerald-500">AES-256 SECURE PROFILE SYNC</p>
+                        </div>
+                    </div>
+                `;
+            } else if(moduleName.includes("AI Notes") || moduleName.includes("AI Chat") || moduleName.includes("AI Doubt Solver")) {
+                interfaceHTML = `
+                    <div class="space-y-4 text-xs">
+                        <div class="p-3 bg-blue-500/10 text-blue-600 rounded-xl">AI Generative Assistant Standing By...</div>
+                        <textarea id="ai-custom-prompt" placeholder="Ask anything about UPSC Syllabus, historical landmarks, constitutional amendments..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl p-3 text-xs text-slate-800 dark:text-white focus:outline-none"></textarea>
+                        
+                        <!-- Mini dynamic output screen -->
+                        <div id="ai-mini-terminal" class="p-3 bg-slate-950 text-slate-300 font-mono text-[10px] rounded-xl h-40 overflow-y-auto hidden">
+                            <!-- Real-time mock response generated -->
+                        </div>
+                        
+                        <button onclick="runMockAIGeneration()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold">Synthesize Generative Response</button>
+                    </div>
+                `;
+            } else if(moduleName.includes("QR Terminal Scanner")) {
+                interfaceHTML = `
+                    <div class="space-y-4 text-xs text-center py-6">
+                        <div class="relative w-48 h-48 mx-auto border-4 border-amber-600 rounded-2xl overflow-hidden bg-black flex items-center justify-center">
+                            <!-- Target scanning box -->
+                            <div class="absolute inset-4 border border-dashed border-slate-500 opacity-60"></div>
+                            <!-- Moving scanning laser -->
+                            <div class="absolute left-0 right-0 h-1 bg-red-500 shadow-[0_0_10px_red] laser-scanner"></div>
+                            <i class="fa-solid fa-qrcode text-6xl text-slate-600"></i>
+                        </div>
+                        <p class="font-extrabold text-slate-700 dark:text-slate-200">Point device camera at registration slips</p>
+                        <p class="text-[11px] text-slate-400 max-w-xs mx-auto">This scanner links directly to the Central Union Registration Portal to pull OTR profiles instantly.</p>
+                        <button onclick="runDynamicActionMock('Camera scan validated')" class="bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 px-4 py-2 rounded-xl font-bold">Mock Capture Scan</button>
+                    </div>
+                `;
+            } else if(moduleName.includes("PDF Conversion Suite")) {
+                interfaceHTML = `
+                    <div class="space-y-4 text-xs">
+                        <p class="text-slate-400">Select files to compress, split or sign matching government size limit guidelines (under 2MB).</p>
+                        <div class="p-6 border-2 border-dashed border-slate-300 dark:border-slate-800 rounded-2xl text-center bg-slate-50 dark:bg-slate-900/40">
+                            <i class="fa-regular fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                            <p class="font-bold">Drag and drop UPSC Syllabus PDF here</p>
+                        </div>
+                        <div id="pdf-progress-bar-container" class="hidden">
+                            <p class="text-[10px] text-slate-500 mb-1">Compressing payload...</p>
+                            <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                                <div id="pdf-progress-fill" class="bg-amber-500 h-full w-0 transition-all duration-1000"></div>
+                            </div>
+                        </div>
+                        <button onclick="simulatePDFConversion()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold">Start Conversion</button>
+                    </div>
+                `;
+            } else if(moduleName.includes("AES Key Locker")) {
+                interfaceHTML = `
+                    <div class="space-y-4 text-xs">
+                        <p class="text-slate-400">Encrypt and store credentials locally within secure browser memory pools.</p>
+                        <div class="space-y-2">
+                            <input type="text" id="vault-key-name" placeholder="E.g. My UPSC Portal Login" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs">
+                            <input type="password" id="vault-key-pass" placeholder="Secure Password" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-xl text-xs">
+                        </div>
+                        <div id="vault-log" class="p-3 bg-slate-100 dark:bg-slate-900 rounded-xl border font-mono text-[10px] hidden"></div>
+                        <button onclick="saveSecretToVault()" class="w-full bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 py-2.5 rounded-xl font-bold">Lock and Encrypt</button>
+                    </div>
+                `;
+            } else {
+                interfaceHTML = `
+                    <div class="space-y-4 text-xs text-center py-8">
+                        <i class="fa-solid fa-gears text-4xl text-amber-500 animate-spin" style="animation-duration: 4s;"></i>
+                        <p class="font-extrabold text-slate-700 dark:text-slate-200">${moduleName} Terminal Operational</p>
+                        <p class="text-[11px] text-slate-400 max-w-xs mx-auto">This sub-feature node is currently synced with central secure memory buffers. Operational parameters fully optimized!</p>
+                        <button onclick="runDynamicActionMock('${moduleName} tested')" class="bg-blue-900 text-white dark:bg-amber-600 dark:text-slate-950 px-4 py-2 rounded-xl font-bold">Verify Security Loop</button>
+                    </div>
+                `;
+            }
+            contentNode.innerHTML = interfaceHTML;
+        }
+
+        function closeEcosystemDrawer() {
+            const drawer = document.getElementById("ecosystem-drawer");
+            drawer.classList.add("translate-x-full");
+            setTimeout(() => drawer.classList.add("hidden"), 500);
+        }
+
+        // --- DYNAMIC UTILITY MOCK EXECUTION TRIGGERS ---
+        function runMockAIGeneration() {
+            const prompt = document.getElementById("ai-custom-prompt").value.trim();
+            if(!prompt) {
+                showToastNotification("⚠️ Please write a question to ask the AI engine.", "error");
+                return;
+            }
+            const term = document.getElementById("ai-mini-terminal");
+            term.classList.remove("hidden");
+            term.innerText = "Processing vector handshakes...\nConnecting to Gemini Central Cognitive Layer...";
+
+            setTimeout(() => {
+                term.innerText = `[PROMPT]: "${prompt}"\n\n[RESPONSE]: Ameshwar Dewangan, based on the standard Union Administration criteria, the dynamic parameters matching your request have been decrypted successfully. Let us focus on the agricultural productivity guidelines in the latest plans.`;
+                showToastNotification("Generative response compiled!", "success");
+            }, 800);
+        }
+
+        function simulatePDFConversion() {
+            const bar = document.getElementById("pdf-progress-bar-container");
+            const fill = document.getElementById("pdf-progress-fill");
+            bar.classList.remove("hidden");
+            fill.style.width = "0%";
+            setTimeout(() => { fill.style.width = "100%"; }, 100);
+
+            setTimeout(() => {
+                showToastNotification("PDF compressed to 1.84MB (Within 2MB UPSC limits)", "success");
+                closeEcosystemDrawer();
+            }, 1200);
+        }
+
+        function saveSecretToVault() {
+            const name = document.getElementById("vault-key-name").value.trim();
+            const pass = document.getElementById("vault-key-pass").value.trim();
+            if(!name || !pass) {
+                showToastNotification("⚠️ Please fill all secret fields.", "error");
+                return;
+            }
+            const log = document.getElementById("vault-log");
+            log.classList.remove("hidden");
+            log.innerText = `AES-256-ENCRYPTED:\n${btoa(pass).substring(0, 16)}==\nLocation: Browser Memory`;
+            showToastNotification("Credentials locked successfully!", "success");
+        }
+
+        function runDynamicActionMock(taskStr) {
+            showToastNotification(`${taskStr} compiled successfully!`, "success");
+            closeEcosystemDrawer();
+        }
+
+        // --- INTERACTIVE QUIZ ENGINE ---
+        const quizBank = {
+            hacks: { q: "Which everyday hack maximizes studying retention efficiently?", o: ["Reading aloud recursively", "Pomodoro Protocol (25m study / 5m breaks)", "Continuous 8-hour sprint loops"], a: 1, c: "hacks" },
+            reasoning: { q: "If A = 2, B = 4, C = 6, what parameter solves the equation values of DOG?", o: ["52", "62", "48"], a: 0, c: "reasoning" },
+            maths: { q: "Compute the prime matrix parameter factor calculation logic for value: 7^3", o: ["218", "343", "49"], a: 1, c: "maths" },
+            english: { q: "Identify the correct vocabulary layout mapping structural synchronization:", o: ["Accommodation", "Acomodation", "Accomodation"], a: 0, c: "english" },
+            gk: { q: "Which state commission sector logic governs architectural frameworks inside Bilaspur Junction?", o: ["SEC Railway Zone Network", "Central Northern Systems", "Western Metropolitan Grid"], a: 0, c: "gk" }
+        };
+
+        let activeQuizScore = 0;
+
+        function initializeQuizModule(categoryKey) {
+            const activeData = quizBank[categoryKey];
+            const displayTerminal = document.getElementById("active-quiz-terminal");
+            displayTerminal.classList.remove("hidden");
+
+            document.getElementById("quiz-badge-category").innerText = activeData.c;
+            document.getElementById("quiz-question-node").innerText = activeData.q;
+            
+            const optBox = document.getElementById("quiz-options-box");
+            optBox.innerHTML = "";
+            
+            activeData.o.forEach((optionString, indexIdx) => {
+                const optBtn = document.createElement("button");
+                optBtn.className = "w-full text-left p-3.5 bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-all flex items-center justify-between";
+                optBtn.innerHTML = `<span>${optionString}</span> <i class="fa-regular fa-circle text-[10px] text-slate-400"></i>`;
+                optBtn.onclick = () => verifyQuizSubmission(indexIdx, activeData.a, optBtn);
+                optBox.appendChild(optBtn);
+            });
+        }
+
+        function verifyQuizSubmission(userChoice, correctChoice, buttonElement) {
+            const optBox = document.getElementById("quiz-options-box");
+            // Disable all options once a choice is registered
+            optBox.querySelectorAll("button").forEach(btn => btn.onclick = null);
+
+            if(userChoice === correctChoice) {
+                buttonElement.className = "w-full text-left p-3.5 bg-emerald-500/10 border border-emerald-500 rounded-xl text-emerald-600 dark:text-emerald-400 font-bold flex items-center justify-between animate-pulse";
+                buttonElement.querySelector("i").className = "fa-solid fa-circle-check text-emerald-400 text-xs";
+                activeQuizScore += 50;
+                document.getElementById("quiz-score-node").innerText = activeQuizScore;
+                showToastNotification("Gained +50 XP Score Points!", "success");
+            } else {
+                buttonElement.className = "w-full text-left p-3.5 bg-rose-500/10 border border-rose-500 rounded-xl text-rose-600 dark:text-rose-400 font-bold flex items-center justify-between";
+                buttonElement.querySelector("i").className = "fa-solid fa-circle-xmark text-rose-400 text-xs";
+                showToastNotification("Answer Verification Failure.", "error");
+            }
+        }
+
+        // --- P2P LIVE DISCUSSION LOBBY SIMULATOR ---
+        function postQuickP2PMessage() {
+            const input = document.getElementById("p2p-quick-input");
+            const val = input.value.trim();
+            if(!val) return;
+            
+            const lobby = document.getElementById("p2p-live-lobby");
+            const msg = document.createElement("div");
+            msg.className = "p-2.5 bg-blue-500/5 dark:bg-amber-500/5 rounded-xl border border-blue-900/20 dark:border-amber-500/20";
+            msg.innerHTML = `<span class="font-bold text-[10px] text-emerald-600 dark:text-emerald-400">Ameshwar (You):</span> <span class="text-slate-600 dark:text-slate-300">${val}</span>`;
+            lobby.appendChild(msg);
+            
+            input.value = "";
+            lobby.scrollTop = lobby.scrollHeight;
+            showToastNotification("Message published to global exam lobby", "success");
+        }
+
+        // --- DYNAMIC CONTINUOUS POPULATION SIMULATORS ---
+        setInterval(() => {
+            const indNode = document.getElementById("india-pop-clock");
+            const wrlNode = document.getElementById("world-pop-clock");
+            if(indNode && wrlNode) {
+                let currentIndVal = parseInt(indNode.innerText.replace(/,/g, ''));
+                let currentWrlVal = parseInt(wrlNode.innerText.replace(/,/g, ''));
+                indNode.innerText = (currentIndVal + Math.floor(Math.random() * 2) + 1).toLocaleString('en-IN');
+                wrlNode.innerText = (currentWrlVal + Math.floor(Math.random() * 3) + 1).toLocaleString('en-US');
+            }
+        }, 850);
+
+        // --- QUANTUM INTERNAL SEARCH MECHANIC ---
+        function executeQuantumSearch() {
+            const inputVal = document.getElementById("internal-search-input").value.toLowerCase().trim();
+            const resultTerm = document.getElementById("search-results-terminal");
+            resultTerm.classList.remove("hidden");
+            resultTerm.innerHTML = "";
+
+            if (!inputVal) {
+                resultTerm.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">Please enter keywords to query index pools.</p>`;
+                return;
+            }
+
+            const sampleIndexing = [
+                { title: "UPSC Civil Services Syllabus Framework Document", category: "Govt Matrix", url: "https://upsconline.nic.in" },
+                { title: "Reasoning Shortcuts Strategy & Equation Matrix Formulas", category: "Academic Index", url: "#" },
+                { title: "CGPSC State Administrative Exam Structure Notification Details", category: "Govt Matrix", url: "https://psc.cg.gov.in" }
+            ];
+
+            const filtered = sampleIndexing.filter(item => item.title.toLowerCase().includes(inputVal));
+            
+            if(filtered.length > 0) {
+                filtered.forEach(res => {
+                    const row = document.createElement("div");
+                    row.className = "p-3.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs shadow-md";
+                    row.innerHTML = `<div><p class="font-bold text-slate-800 dark:text-white">${res.title}</p><span class="text-[9px] text-purple-600 dark:text-purple-400 font-mono">${res.category}</span></div><a href="${res.url}" target="_blank" class="text-blue-600 dark:text-cyan-400 hover:underline">Launch Node</a>`;
+                    resultTerm.appendChild(row);
+                });
+            } else {
+                resultTerm.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">No infrastructure records indexed matching input parameters.</p>`;
+            }
+        }
+
+        function triggerPlaceholderAI(moduleName) {
+            showToastNotification(`${moduleName} algorithm compiled successfully!`, "success");
+        }
+
+        // --- DYNAMIC INTERACTIVE BACKGROUND CANVAS MESH ---
+        const canvas = document.getElementById("mesh-canvas");
+        const ctx = canvas.getContext("2d");
+        let points = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initPoints();
+        }
+
+        function initPoints() {
+            points = [];
+            const count = Math.min(40, Math.floor(window.innerWidth / 30));
+            for (let i = 0; i < count; i++) {
+                points.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 2 + 1
+                });
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const isDark = document.documentElement.classList.contains("dark");
+            ctx.fillStyle = isDark ? "rgba(180, 83, 9, 0.4)" : "rgba(30, 58, 138, 0.15)";
+            ctx.strokeStyle = isDark ? "rgba(180, 83, 9, 0.08)" : "rgba(30, 58, 138, 0.05)";
+
+            points.forEach((p, idx) => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw connection lines
+                for (let j = idx + 1; j < points.length; j++) {
+                    const p2 = points[j];
+                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+
+            requestAnimationFrame(animateCanvas);
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        window.onload = function() {
+            resizeCanvas();
+            animateCanvas();
+        };
     </script>
 </body>
 </html>
